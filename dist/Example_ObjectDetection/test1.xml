@@ -1,0 +1,28 @@
+<xml xmlns="https://developers.google.com/blockly/xml">
+  <block type="init_ros_node" id="~@V0mYKD;hrpGL09.7JA" x="162" y="64">
+    <next>
+      <block type="start_object_detector" id="mCMO$L@NE9WXtKCTKt-y">
+        <next>
+          <block type="rospy_loop" id="IFDIeC};bs:H|gEF^b{]">
+            <statement name="DO">
+              <block type="text_print" id="uW=Z|8PZ|][Tjc@3kLJF">
+                <value name="TEXT">
+                  <block type="get_objects" id="br9z^u*L^|,/z$?hhk9B"/>
+                </value>
+                <next>
+                  <block type="delay" id=";u26ml5xNZ4_G*9_K~5I">
+                    <value name="NAME">
+                      <block type="math_number" id="3CA=WG;I0tE8fS{us*Pg">
+                        <field name="NUM">2</field>
+                      </block>
+                    </value>
+                  </block>
+                </next>
+              </block>
+            </statement>
+          </block>
+        </next>
+      </block>
+    </next>
+  </block>
+</xml>
