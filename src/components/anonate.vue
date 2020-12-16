@@ -39,14 +39,14 @@
           <div
             :id="id"
             :class="{ img: true, active: imageActiveIndex === id }"
-            v-for="(file, id) in images"
+            v-for="(file, id) in getImages"
             :key="id"
             v-on:click="onSelect($event)"
           >
             <img class="thumb" :src="file.file" alt="" srcset="" /><span
-              v-if="file.isAnnotated === 1"
+              v-if="file.isAnnotated === true"
               class="annotated-btn count"
-              >{{ file.classCounts }}</span
+              >{{ file.count }}</span
             >
           </div>
         </div>
@@ -161,12 +161,7 @@
             </div>
           </div>
         </div>
-        <div class="w-100">
-          <!-- <div class="next op-btn" @click="onClick" v-on:click.prevent>
-                    <span>TRAINING</span>
-                    <span class="ico"><img src="../assets/UI/svg/up-arrow.svg" alt="" srcset=""></span>
-                </div> -->
-        </div>
+        <div class="w-100"></div>
       </div>
     </div>
 
@@ -331,6 +326,7 @@ export default {
           console.log(response.data);
           if (response.data.status === "OK") {
             console.log("File is OK!!!!");
+            this.$store.dispatch("reqImages", true);
           }
         })
         .catch((error) => {
@@ -354,26 +350,7 @@ export default {
         },
       });
 
-      axiosInstance
-        .post("/addClass", {
-          class: "labeled",
-          file: this.selectedFile,
-          classCounts: this.anotate.annotation.object.length,
-          projectpath: this.$store.getters.getProjectDir,
-        })
-        .then((response) => {
-          if (response.data.status === "OK") {
-
-            this.images[this.imageActiveIndex].isAnnotated = 1;
-            this.images[this.imageActiveIndex].class = "labeled";
-            this.images[
-              this.imageActiveIndex
-            ].classCounts = this.anotate.annotation.object.length;
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      this.saveAnotationFile();
     },
     onBeforeChange: function (oldSlideIndex, newSlideIndex) {
       console.log("Before change");
@@ -460,8 +437,11 @@ export default {
       this.imSrc = this.images[index].file;
       this.selectedFile = this.images[index].fileName;
       this.imFolder = "images";
-      var imPath =
-        "/" + this.$store.getters.getProjectDir + "/" + this.imFolder + "/";
+      this.getXML();
+      return (this.selectedIndx = index);
+    },
+    getXML: function () {
+      var imPath = "/" + this.$store.getters.getProjectDir + "/images/";
       var xmlFileName =
         imPath + this.selectedFile.replace(/\.[^/.]+$/, "") + ".xml";
       console.log("xmlFileName = ");
@@ -501,7 +481,6 @@ export default {
         .catch(function (error) {
           console.log(error);
         });
-      return (this.selectedIndx = index);
     },
     onClick: function () {
       console.log("Click");

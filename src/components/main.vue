@@ -39,70 +39,96 @@
             <div class="proj-type">Type : {{ getTrainingType }}</div>
             <div class="header-action-button">
               <b-btn
-                :class="['text-green', true ? 'inactive' : '']"
-                v-b-modal.wifi_conn
+                :class="['text-green', !currentWifi ? 'inactive' : '']"
+                @click="wifiConnect"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="28.714"
+                  height="24.742"
+                  viewBox="0 0 28.714 24.742"
+                  v-if="!currentWifi"
                 >
-                <svg xmlns="http://www.w3.org/2000/svg" width="28.714" height="24.742" viewBox="0 0 28.714 24.742">
-                  <path d="M29.254,9.018A23.82,23.82,0,0,0,14.9,4.084a22.775,22.775,0,0,0-5.119.592L22.52,17.405ZM21.114,19.157,4.129,2.16,2.563,3.739,5.091,6.28A22.331,22.331,0,0,0,.54,9.018L14.885,26.89l.012.012.012-.012L19.72,20.9l4.095,4.095,1.566-1.566-4.268-4.268Z" transform="translate(-0.54 -2.16)" />
+                  <path
+                    d="M29.254,9.018A23.82,23.82,0,0,0,14.9,4.084a22.775,22.775,0,0,0-5.119.592L22.52,17.405ZM21.114,19.157,4.129,2.16,2.563,3.739,5.091,6.28A22.331,22.331,0,0,0,.54,9.018L14.885,26.89l.012.012.012-.012L19.72,20.9l4.095,4.095,1.566-1.566-4.268-4.268Z"
+                    transform="translate(-0.54 -2.16)"
+                  />
                 </svg>
-                No Internet</b-btn
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="27.898"
+                  height="22.177"
+                  viewBox="0 0 27.898 22.177"
+                  v-else
+                >
+                  <path
+                    d="M14.59,25.165,28.528,7.79A23.155,23.155,0,0,0,14.579,3,23.155,23.155,0,0,0,.63,7.79L14.568,25.154l.011.022.011-.011Z"
+                    transform="translate(-0.63 -3)"
+                  />
+                </svg>
+                {{ currentWifi ? currentWifi : "No Internet" }}</b-btn
               >
               <b-btn
                 v-show="getTrainingType !== 'Sound'"
-                v-bind:class="'connection-'+getActiveDevice"
+                v-bind:class="'connection-' + getActiveDevice"
                 @click="onToggleDevice"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="46.432"
+                  height="42.861"
+                  viewBox="0 0 46.432 42.861"
                 >
-                <svg xmlns="http://www.w3.org/2000/svg" width="46.432" height="42.861" viewBox="0 0 46.432 42.861">
-                  <path d="M26.591,22.885a4.6,4.6,0,1,0,4.643,4.6A4.633,4.633,0,0,0,26.591,22.885Zm13.93,4.6A13.93,13.93,0,1,0,19.626,39.432l2.322-4.022A9.065,9.065,0,0,1,17.3,27.482a9.287,9.287,0,0,1,18.573,0,9.065,9.065,0,0,1-4.644,7.929l2.322,4.022A13.834,13.834,0,0,0,40.521,27.482ZM26.591,4.5A23.167,23.167,0,0,0,3.375,27.482,22.9,22.9,0,0,0,14.983,47.361L17.3,43.339A18.271,18.271,0,0,1,8.017,27.482a18.575,18.575,0,0,1,37.147,0,18.132,18.132,0,0,1-9.287,15.857L38.2,47.361A22.9,22.9,0,0,0,49.807,27.482,23.167,23.167,0,0,0,26.591,4.5Z" transform="translate(-3.375 -4.5)"/>
+                  <path
+                    d="M26.591,22.885a4.6,4.6,0,1,0,4.643,4.6A4.633,4.633,0,0,0,26.591,22.885Zm13.93,4.6A13.93,13.93,0,1,0,19.626,39.432l2.322-4.022A9.065,9.065,0,0,1,17.3,27.482a9.287,9.287,0,0,1,18.573,0,9.065,9.065,0,0,1-4.644,7.929l2.322,4.022A13.834,13.834,0,0,0,40.521,27.482ZM26.591,4.5A23.167,23.167,0,0,0,3.375,27.482,22.9,22.9,0,0,0,14.983,47.361L17.3,43.339A18.271,18.271,0,0,1,8.017,27.482a18.575,18.575,0,0,1,37.147,0,18.132,18.132,0,0,1-9.287,15.857L38.2,47.361A22.9,22.9,0,0,0,49.807,27.482,23.167,23.167,0,0,0,26.591,4.5Z"
+                    transform="translate(-3.375 -4.5)"
+                  />
                 </svg>
                 {{ getActiveDevice }} Device</b-btn
               >
             </div>
           </div>
-          <!--<ul v-show="getProjectDir !== 'None'" class="step">-->
           <ul class="step">
             <li
-              v-bind:class="{ current: selectedMenu == 1 }"
-              v-on:click="
-                selectedMenu = 1;
-                handleTabChange(selectedMenu);
-              "
+              :class="{
+                current: selectedMenu === 1,
+                inactive: getProjectDir === 'None',
+              }"
+              @click="getProjectDir !== 'None' && handleTabChange(1)"
             >
               <img src="../assets/UI/png/capture.png" alt="" srcset="" />
             </li>
             <li
-              v-bind:class="{ current: selectedMenu == 2, inactive: !hasImage }"
+              v-bind:class="{
+                current: selectedMenu === 2,
+                inactive: !shouldAnnotateEnable,
+              }"
               v-on:click="
-                if (hasImage) {
-                  selectedMenu = 2;
-                  handleTabChange(selectedMenu);
+                if (shouldAnnotateEnable) {
+                  handleTabChange(2);
                 }
               "
             >
               <img src="../assets/UI/png/annotate.png" alt="" srcset="" />
             </li>
             <li
-              v-bind:class="{
+              :class="{
                 current: selectedMenu == 3,
-                inactive: !finishAnnotation,
+                inactive: !shouldTrainEnable,
               }"
-              v-on:click="
-                if (finishAnnotation) {
-                  selectedMenu = 3;
-                  handleTabChange(selectedMenu);
+              @click="
+                if (shouldTrainEnable) {
+                  handleTabChange(3);
                 }
               "
             >
               <img src="../assets/UI/png/train.png" alt="" srcset="" />
             </li>
             <li
-              v-bind:class="{
+              :class="{
                 current: selectedMenu == 4,
               }"
-              v-on:click="
-                selectedMenu = 4;
-                handleTabChange(selectedMenu);
-              "
+              @click="handleTabChange(4)"
             >
               <img src="../assets/UI/png/code.png" alt="" srcset="" />
             </li>
@@ -110,7 +136,7 @@
           <div v-if="getTrainingType === 'None'" class="hint">
             <div
               class="main-hint txt"
-              v-bind:class="{ notype: getTrainingType === 'None' }"
+              :class="{ notype: getTrainingType === 'None' }"
             >
               <p>
                 เริ่มใช้งานโดยกด
@@ -130,7 +156,6 @@
               <img
                 v-if="!isRunning"
                 src="../assets/UI/png/Mask Group 11.png"
-                
                 alt=""
                 srcset=""
               />
@@ -150,12 +175,7 @@
               </p>
             </div>
             <div class="mascot">
-              <img
-                src="../assets/UI/png/Mask Group 11.png"
-                
-                alt=""
-                srcset=""
-              />
+              <img src="../assets/UI/png/Mask Group 11.png" alt="" srcset="" />
             </div>
           </div>
           <div
@@ -180,12 +200,7 @@
               </p>
             </div>
             <div class="mascot">
-              <img
-                src="../assets/UI/png/Mask Group 11.png"
-                
-                alt=""
-                srcset=""
-              />
+              <img src="../assets/UI/png/Mask Group 11.png" alt="" srcset="" />
             </div>
           </div>
           <div
@@ -211,12 +226,7 @@
               </p>
             </div>
             <div class="mascot">
-              <img
-                src="../assets/UI/png/Mask Group 11.png"
-                
-                alt=""
-                srcset=""
-              />
+              <img src="../assets/UI/png/Mask Group 11.png" alt="" srcset="" />
             </div>
           </div>
           <div
@@ -255,12 +265,7 @@
               </p>
             </div>
             <div class="mascot">
-              <img
-                src="../assets/UI/png/Mask Group 11.png"
-                
-                alt=""
-                srcset=""
-              />
+              <img src="../assets/UI/png/Mask Group 11.png" alt="" srcset="" />
             </div>
           </div>
           <div
@@ -283,7 +288,6 @@
               <img
                 v-if="!isRunning"
                 src="../assets/UI/png/Mask Group 11.png"
-                
                 alt=""
                 srcset=""
               />
@@ -312,7 +316,9 @@
         />
         <AnnotateForClassify
           ref="anotateForClassifyComponent"
-          v-if="getTrainingType === 'Image classification' && selectedMenu === 2"
+          v-if="
+            getTrainingType === 'Image classification' && selectedMenu === 2
+          "
         />
         <AnnotateAudio
           ref="anotateAudio"
@@ -355,8 +361,8 @@
         <b-dropdown
           id="dropdown-1"
           :text="
-            getTrainingType !== 'None'
-              ? getTrainingType
+            typeSelect !== 'None'
+              ? typeSelect
               : 'เลือกประเภทการเรียนรู้ (Select training type)'
           "
           class="mode-select"
@@ -407,8 +413,8 @@
       <b-dropdown
         id="dropdown-1"
         :text="
-          getTrainingType !== 'None'
-            ? getTrainingType
+          typeSelect !== 'None'
+            ? typeSelect
             : 'เลือกประเภทการเรียนรู้ (Select training type)'
         "
         class="mode-select"
@@ -494,7 +500,10 @@
       @ok="connectToWifi"
     >
       <p class="modal-ttl">Please select wifi from list</p>
-      <p class="modal-desc">เลือกเครือข่าย wi-fi เพื่อเชื่อต่ออินเทอร์เน็ต สำหรับ KidBright AI<br>หมายเหตุ : แนะนำให้เลือกเครือข่ายเดียวกันกับคอมพิวเตอร์</p>
+      <p class="modal-desc">
+        เลือกเครือข่าย wi-fi เพื่อเชื่อต่ออินเทอร์เน็ต สำหรับ KidBright AI<br />หมายเหตุ
+        : แนะนำให้เลือกเครือข่ายเดียวกันกับคอมพิวเตอร์
+      </p>
       <b-dropdown
         id="ddCommodity"
         name="ddCommodity"
@@ -609,6 +618,8 @@ export default {
       ap_names: [],
       selected_ssid: null,
       wifi_password: "",
+      currentWifi: null,
+      typeSelect: "None",
     };
   },
   methods: {
@@ -620,10 +631,7 @@ export default {
       return (this.selected = items);
     },
     rowClicked: function (item, index) {
-      this.$store.dispatch(
-        "changeProjectDir",
-        this.projectsName[index].Projects
-      );
+      this.projectDirIn = this.projectsName[index].Projects;
     },
     rowDeleteSelected(items) {
       //console.log(items)
@@ -760,7 +768,7 @@ export default {
         let domToPretty = Blockly.Xml.domToPrettyText(xml);
         axiosInstance
           .post("saveXML", {
-            filename: this.$store.getters.getProjectDir + "/test1.xml",
+            filename: this.getProjectDir + "/test1.xml",
             data: domToPretty,
           })
           .then((response) => {
@@ -781,20 +789,18 @@ export default {
 
     async wifiConnect() {
       const res = await axiosInstance.post("/listWifi");
-      while (this.ap_names.length > 0) {
-        this.ap_names.pop();
-      }
       if (res) {
-        console.log(res.data.ap);
-
         var ap = res.data.ap;
-        for (var x of ap) {
-          this.ap_names.push({
-            value: x.ssid,
-            text: x.ssid,
-          });
-          console.log(x.ssid);
-        }
+        this.ap_names = ap.reduce((acc, cur) => {
+          if (!acc.find((e) => e.value === cur.ssid))
+            acc.push({
+              value: cur.ssid,
+              text: cur.ssid,
+            });
+          return acc;
+        }, []);
+
+        this.$bvModal.show("wifi_conn");
       }
     },
 
@@ -805,10 +811,20 @@ export default {
       });
 
       if (res) {
-        console.log(res.data);
+        this.currentWifi = this.selected_ssid;
       }
     },
 
+    async getCurrentWifi() {
+      const res = await axiosInstance.get("/wifi/current");
+      if (res && res.data) {
+        const ap = res.data.ap;
+        const wlan = ap.find((item) => item.iface === "wlan0");
+        if (wlan) {
+          this.currentWifi = wlan.ssid;
+        }
+      }
+    },
     importFile() {
       // This function will be developed in the near future in order to import project from a data storage.
       console.log("This function is not available at this time.");
@@ -830,23 +846,27 @@ export default {
       this.handleSubmit();
     },
     handleSelect(type) {
-      this.$store.dispatch("setTrainingType", type);
+      this.typeSelect = type;
+    },
+    handleSelectSubmit() {
+      this.$store.dispatch("setTrainingType", this.typeSelect);
     },
     handleSubmit() {
       // Exit when the form isn't valid
       if (!this.checkFormValidity()) {
         return;
       }
-      this.$store.dispatch(
-        "setProjectDir",
-        { name: this.projectDirIn,
-        type: this.getTrainingType }
-      );
+      this.$store.dispatch("setProjectDir", {
+        name: this.projectDirIn,
+        type: this.typeSelect,
+      });
       // Hide the modal manually
-      if (this.getTrainingType !== "None" && this.getProjectDir !== "None") {
+      if (this.typeSelect !== "None" && this.projectDirIn !== "None") {
         this.$nextTick(() => {
           this.$refs.modal.hide();
           this.selectedMenu = 1;
+          this.handleSelectSubmit();
+          this.$store.dispatch("changeProjectDir", this.projectDirIn);
         });
       } else {
         console.log("Training type is required.");
@@ -860,19 +880,20 @@ export default {
       this.selectedProjectType();
     },
     selectedProjectType() {
-      if (
-        this.$store.getters.getTrainingType !== "None" &&
-        this.getProjectDir !== "None"
-      ) {
+      if (this.typeSelect !== "None" && this.projectDirIn !== "None") {
+        this.handleSelectSubmit();
+        this.$store.dispatch("changeProjectDir", this.projectDirIn);
         this.$nextTick(() => {
           this.$refs.openModal.hide();
           this.loadWorkspace();
           this.isProjectLoaded = false;
-          if (this.$store.getters.getTrainingType === "Sound") {
+          if (this.getTrainingType === "Sound") {
             this.$store.dispatch("reqAudios");
             this.$store.dispatch("reqAudiosClasses");
+          } else if (this.getTrainingType === "Object detection") {
+            this.$store.dispatch("reqImages", true);
           } else {
-            this.$store.dispatch("reqImages");
+            this.$store.dispatch("reqImages", false);
             this.$store.dispatch("reqImagesClasses");
           }
         });
@@ -884,12 +905,12 @@ export default {
       // --clear filled form --
     },
     handleTabChange(tabIndex) {
-      console.log("Tabindex = " + tabIndex, this.getTrainingType);
       // Because without using v-tab, Then index start with 1
-      if (tabIndex == 1 && this.loaded == false) {
+      this.selectedMenu = tabIndex;
+      if (tabIndex === 1 && this.loaded === false) {
         this.isRunHiden = false;
       }
-      if (tabIndex == 4) {
+      if (tabIndex === 4) {
         this.isRunHiden = true;
       } else {
         this.isRunHiden = false;
@@ -902,7 +923,6 @@ export default {
               projectpath: this.getProjectDir,
             })
             .then((response) => {
-              console.log(response.data.classes);
               while (this.$refs.anotateComponent.classes.length) {
                 this.$refs.anotateComponent.classes.pop();
               }
@@ -914,7 +934,6 @@ export default {
                   Label: info1[index1],
                 });
               }
-              console.log(this.$refs.anotateComponent.classes);
             });
         }
       }
@@ -931,7 +950,7 @@ export default {
       this.isRunning = true;
       axiosInstance
         .post("run", {
-          filename: this.$store.getters.getProjectDir + "/test1.py",
+          filename: this.getProjectDir + "/test1.py",
           data: this.code,
         })
         .then((response) => {
@@ -971,7 +990,7 @@ export default {
     stopRun() {
       axiosInstance
         .post("stop", {
-          filename: this.$store.getters.getProjectDir + "/test1.py",
+          filename: this.getProjectDir + "/test1.py",
           data: this.code,
         })
         .then((response) => {
@@ -985,7 +1004,7 @@ export default {
       let domToPretty = Blockly.Xml.domToPrettyText(xml);
       axiosInstance
         .post("saveXML", {
-          filename: this.$store.getters.getProjectDir + "/test1.xml",
+          filename: this.getProjectDir + "/test1.xml",
           data: domToPretty,
         })
         .then((response) => {
@@ -999,7 +1018,7 @@ export default {
 
       axiosInstance
         .post("getXML", {
-          filename: this.$store.getters.getProjectDir + "/test1.xml",
+          filename: this.getProjectDir + "/test1.xml",
         })
         .then((response) => {
           /*var xml = Blockly.Xml.textToDom(response.data)
@@ -1018,32 +1037,6 @@ export default {
           //this.isProjectLoaded = true
         });
     },
-    // linkProperties(route) {
-    //   const routeName = route.name ? route.name : route
-    //   const externalRoute = this.externalRoutes.filter(
-    //     (r) => r.name === routeName,
-    //   )[0]
-    //   let url = externalRoute ? externalRoute.url : routeName
-
-    //   if (externalRoute || url.match(/^(http(s)?|ftp):\/\//)) {
-    //     if (route.query) {
-    //       url = `${url}?${$.param(route.query)}`
-    //     }
-
-    //     return {
-    //       is: 'a',
-    //       href: url,
-    //     }
-    //   }
-
-    //   return {
-    //     is: 'router-link',
-    //     to: {
-    //       name: url,
-    //       query: route.query,
-    //     },
-    //   }
-    // },
 
     onForward: function () {
       // var x = 0
@@ -1203,6 +1196,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch("reqProjects");
+    this.getCurrentWifi();
 
     this.cmdVel = this.getCmdVel;
 
@@ -1327,6 +1321,7 @@ export default {
       "getTrainingType",
       "getBlocklyWorkspace",
       "getActiveDevice",
+      "getAudios",
     ]),
     getImgSrc: function () {
       return this.url;
@@ -1334,11 +1329,22 @@ export default {
     saveButton: function () {
       return this.isSaving ? "Saving..." : "Save to usb";
     },
-
-    /*
-                getImgSrc: function () {
-                    return this.imgSrc
-                }*/
+    shouldAnnotateEnable: function () {
+      return (
+        this.getProjectDir !== "None" &&
+        (this.getTrainingType === "Sound"
+          ? this.getAudios.length > 0
+          : this.getImages.length > 0)
+      );
+    },
+    shouldTrainEnable: function () {
+      return (
+        this.shouldAnnotateEnable &&
+        (this.getTrainingType === "Sound"
+          ? this.getAudios.find((item) => item.isAnnotated)
+          : this.getImages.find((item) => item.isAnnotated))
+      );
+    },
   },
   props: {
     msg: String,
@@ -1417,7 +1423,7 @@ ul {
     flex-direction: column;
     align-items: flex-start;
     padding: 0;
-    height: calc( 100% - 8px - 52px - 65px - 20px );
+    height: calc(100% - 8px - 52px - 65px - 20px);
     overflow: hidden;
 
     .proj-name {
@@ -1477,7 +1483,7 @@ ul {
     }
 
     .hint {
-      width: calc( 100% - 20px );
+      width: calc(100% - 20px);
       height: calc(100%);
       margin: 0 10px 10px;
       text-align: left;
@@ -1729,7 +1735,7 @@ ul {
       }
     }
     .connection-robot {
-      background-color: #1A3700;
+      background-color: #1a3700;
       color: #f7ff00;
       svg {
         fill: #f7ff00;
@@ -1737,9 +1743,9 @@ ul {
     }
     .connection-computer {
       background-color: #003137;
-      color: #00FFF6;
+      color: #00fff6;
       svg {
-        fill: #00FFF6;
+        fill: #00fff6;
       }
     }
     .text-green {

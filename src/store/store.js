@@ -30,9 +30,7 @@ export default new Vuex.Store({
 
   getters: {
     // Here we will create a getter
-    getProjectDir: (state) => {
-      return state.projectDir
-    },
+    getProjectDir: (state) => state.projectDir,
     getProjects: (state) => state.projects,
     getImages: (state) => state.images,
     getImagesClasses: (state) => state.imagesClasses,
@@ -153,8 +151,8 @@ export default new Vuex.Store({
           console.log(error)
         })
     },
-    reqImages({ state, commit }) {
-      let uri = `/img/${state.projectDir}`
+    reqImages({ state, commit }, xmlAnnotate = false) {
+      let uri = `/img/${state.projectDir}?xmlAnnotate=${xmlAnnotate}`
       axiosInstance
         .get(uri)
         .then((response) => {
@@ -163,13 +161,23 @@ export default new Vuex.Store({
           var allImgs = []
           for (index = 0, len = info.length; index < len; ++index) {
             var imPath = `${state.projectDir}/images/${info[index].file}`
-            allImgs.unshift({
-              fileName: info[index].file,
-              file: imPath,
-              id: info[index].id,
-              isAnnotated: info[index].isAnotated,
-              class: info[index].class,
-            })
+            if (xmlAnnotate) {
+              allImgs.unshift({
+                fileName: info[index].file,
+                file: imPath,
+                id: info[index].id,
+                isAnnotated: info[index].isAnnotated,
+                count: info[index].count,
+              })
+            } else {
+              allImgs.unshift({
+                fileName: info[index].file,
+                file: imPath,
+                id: info[index].id,
+                isAnnotated: info[index].isAnnotated,
+                class: info[index].class,
+              })
+            }
           }
           commit('addImages', allImgs)
         })
