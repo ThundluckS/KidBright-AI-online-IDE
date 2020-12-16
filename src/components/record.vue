@@ -75,7 +75,7 @@
             </div>
           </div>
         </div>
-        <div v-if="getAudiosLength > 0" style="padding: 1em; overflow-y: auto">
+        <div v-if="getAudiosLength > 0 && forceItemRender" style="padding: 1em; overflow-y: auto">
           <div v-for="(item, idx) in getAudios" :key="idx">
             <div
               :class="[
@@ -372,6 +372,7 @@ export default {
       timeCurrent: null,
       timeDuration: null,
       volume: 0.4,
+      forceItemRender: true,
     };
   },
   methods: {
@@ -462,6 +463,12 @@ export default {
         this.renderComponent = true;
       });
     },
+    forceItemRerender() {
+      this.forceItemRender = false;
+      this.$nextTick(() => {
+        this.forceItemRender = true;
+      });
+    },
     onSetCurrent: function (time) {
       this.timeCurrent = time;
     },
@@ -502,6 +509,9 @@ export default {
     },
     selectedAudio: function (value) {
       this.forceRerender();
+    },
+    getAudios: function (value) {
+      this.forceItemRerender();
     },
     isPlaying: function (index) {
       if (index !== -1 && index !== this.activeIndex) {
