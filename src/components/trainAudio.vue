@@ -100,7 +100,7 @@ var trainInstance = axios.create({
 });
 
 var axiosInstance = axios.create({
-  baseURL: `${location.protocol}//${location.hostname}:3001`,
+  baseURL: `${location.protocol}//${location.hostname}:3000`,
 });
 
 const initial_model_params = [

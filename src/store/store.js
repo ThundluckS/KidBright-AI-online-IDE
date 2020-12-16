@@ -5,7 +5,7 @@ import axios from 'axios'
 Vue.use(Vuex)
 
 var axiosInstance = axios.create({
-  baseURL: `${location.protocol}//${location.hostname}:3001`,
+  baseURL: `${location.protocol}//${location.hostname}:3000`,
 })
 
 export default new Vuex.Store({
@@ -100,7 +100,7 @@ export default new Vuex.Store({
 
   actions: {
     // Here we will create Larry
-    setProjectDir({ commit, dispatch }, name, type) {
+    setProjectDir({ commit, dispatch }, { name, type }) {
       axiosInstance
         .post('createProject', {
           name,

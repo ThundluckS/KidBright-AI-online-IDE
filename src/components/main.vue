@@ -550,7 +550,7 @@ import Blockly from "blockly";
 //import blocklyPython from 'node-blockly/python';
 
 var axiosInstance = axios.create({
-  baseURL: `${location.protocol}//${location.hostname}:3001`,
+  baseURL: `${location.protocol}//${location.hostname}:3000`,
 });
 
 var axios_options = {
@@ -816,7 +816,7 @@ export default {
 
     checkFormValidity() {
       const valid = this.$refs.form.checkValidity();
-      this.nameState = valid ? "valid" : "invalid";
+      this.nameState = valid ? true : false;
       return valid;
     },
     resetModal() {
@@ -837,12 +837,10 @@ export default {
       if (!this.checkFormValidity()) {
         return;
       }
-      // Push the name to submitted names
-      //this.submittedNames.push(this.projectDirIn)
       this.$store.dispatch(
         "setProjectDir",
-        this.projectDirIn,
-        this.getTrainingType
+        { name: this.projectDirIn,
+        type: this.getTrainingType }
       );
       // Hide the modal manually
       if (this.getTrainingType !== "None" && this.getProjectDir !== "None") {

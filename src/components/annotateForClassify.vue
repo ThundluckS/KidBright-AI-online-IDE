@@ -175,7 +175,7 @@ import { mapGetters } from "vuex";
 var convert = require("xml-js");
 
 var axiosInstance = axios.create({
-  baseURL: `${location.protocol}//${location.hostname}:3001`,
+  baseURL: `${location.protocol}//${location.hostname}:3000`,
 });
 
 export default {

@@ -5,7 +5,9 @@
         class="d-flex flex-fill flex-column main-panel"
         style="background-color: white"
       >
-        <div class="d-flex flex-fill align-items-center justify-content-center view-panel">
+        <div
+          class="d-flex flex-fill align-items-center justify-content-center view-panel"
+        >
           <!-- <div class="row">
             <b-col md="auto">
               <div class="image-container">
@@ -27,7 +29,9 @@
             :src="getImgSrc"
             alt="Center image"
           ></b-img>
-          <p class="view-img-desc" v-show="getImgSrc === null">No selected image, please click on the image below to select.</p>
+          <p class="view-img-desc" v-show="getImgSrc === null">
+            No selected image, please click on the image below to select.
+          </p>
           <!-- <b-img
             v-show="getImgSrc !== null"
             crossorigin="anonymous"
@@ -35,7 +39,15 @@
             :src="getImgSrc"
           ></b-img>
           <p class="view-img-desc" v-show="getImgSrc === null">No selected image, please click on the image below to select.</p> -->
-          <div class="img-counter"><span class="current-img">2</span><span class="ov-img">/ 999 IMAGES</span></div>
+          <div class="img-counter">
+            <span class="current-img">{{
+              imageActiveIndex !== -1 ? imageActiveIndex + 1 : null
+            }}</span
+            ><span class="ov-img"
+              >{{ imageActiveIndex !== -1 ? "/" : null }}
+              {{ getImages.length }} IMAGES</span
+            >
+          </div>
         </div>
         <div class="img-slider">
           <div
@@ -115,9 +127,7 @@
       :hide-footer="true"
     >
       <div v-show="importShow">
-        <p class="modal-ttl">
-          Please use ' browse ' for importing images
-        </p>
+        <p class="modal-ttl">Please use ' browse ' for importing images</p>
         <div class="text-center">
           <img src="../assets/UI/png/khanomchan-import.png" width="120px" />
         </div>
@@ -181,7 +191,6 @@ import "vue-awesome/icons";
 import { mapGetters } from "vuex";
 import { WebCam } from "vue-web-cam";
 
-
 var axios_options = {
   proxy: {
     host: "127.0.0.1",
@@ -190,7 +199,7 @@ var axios_options = {
 };
 
 var axiosInstance = axios.create({
-  baseURL: `${location.protocol}//${location.hostname}:3001`,
+  baseURL: `${location.protocol}//${location.hostname}:3000`,
 });
 
 export default {
@@ -211,7 +220,7 @@ export default {
       projectDirIn: "",
       nameState: null,
       images: [],
-      imageActiveIndex: undefined,
+      imageActiveIndex: -1,
       showCapturing: false,
       camera: null,
       deviceId: null,
@@ -271,7 +280,7 @@ export default {
       }
     },
     onStarted(stream) {
-      if (this.getActiveDevice !== 'computer') this.$refs.webcam.stop();
+      if (this.getActiveDevice !== "computer") this.$refs.webcam.stop();
     },
     onStopped(stream) {},
     onStop() {
@@ -648,11 +657,11 @@ $primary-color: #007e4e;
     padding: 10px 20px;
     box-shadow: 0 0 10px #33333333;
     span {
-        font-weight: bold;
+      font-weight: bold;
     }
     .current-img {
-        color: $primary-color;
-        padding-right: 5px;
+      color: $primary-color;
+      padding-right: 5px;
     }
   }
 }
