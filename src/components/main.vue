@@ -330,9 +330,7 @@
         />
         <TrainLocal
           ref="trainLocalComponent"
-          v-if="
-            getTrainingType === 'Image classification' && selectedMenu === 3
-          "
+          v-if="getTrainingType === 'Image classification' && selectedMenu === 3"
         />
         <TrainAudio
           ref="trainLocalAudioComponent"
