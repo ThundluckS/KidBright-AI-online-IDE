@@ -2,10 +2,15 @@
   <div style="height: 100vh; width: 100vw;">
     <b-input-group class="train-panel">
       <b-input-group-append>
-        <button class="btn base-btn" :disabled="trainable" @click="onTrain()">
-          <b-spinner v-if="loading" small type="grow"></b-spinner>
-          {{ isTraining ? 'Training' : (isDone ? 'Train Complete' : 'Train') }}
-        </button>
+        <div class="btn-wrap">
+          <button class="btn base-btn" :disabled="trainable" @click="onTrain()">
+            <b-spinner v-if="loading" small type="grow"></b-spinner>
+            {{ isTraining ? 'Training' : (isDone ? 'Train Complete' : 'Train') }}
+          </button>
+          <div class="setting" @click="trainSetting()">
+            <img class="tag" src="../assets/UI/svg/settings.svg" height="24" />
+          </div>
+        </div>
         <button class="btn base-btn" @click="onInference">
           Test
         </button>
@@ -34,6 +39,38 @@
         <img class="tag" src="../assets/UI/svg/Group 177_green.svg" height="24" />
         <span>TOTORO</span>
       </div>
+    </b-modal>
+    <b-modal
+      id="train"
+      centered
+      title="Parameter Settings"
+      modal-class="train-setting my-modal-class"
+      :hide-footer="true"
+    >
+      <b-form-input placeholder="Input Example"></b-form-input>
+      <b-form-input placeholder="Input Example"></b-form-input>
+      <button class="adv btn" @click="adv_param === false ? adv_param = true : adv_param = false">{{adv_param ? '- Advance Parameters' : '+ Advance Parameters' }}</button>
+      <div v-if="adv_param">
+        <b-form-input placeholder="Input Example"></b-form-input>
+        <b-form-input placeholder="Input Example"></b-form-input>
+        <div class="modal-check">
+          <input type="checkbox" id="checkbox" v-model="checked">
+          <label for="checkbox">Save best only</label>
+        </div>
+      </div>
+      <div class="modal-action-btn">
+        <button class="btn" @click="addLayer()">Add layer</button>
+        <button class="btn save">Save</button>
+      </div>
+    </b-modal>
+    <b-modal
+      id="add-layer"
+      centered
+      title="Add Layer"
+      modal-class="my-modal-class"
+      :hide-footer="true"
+    >
+      Add layer
     </b-modal>
   </div>
 </template>
@@ -81,6 +118,7 @@ export default {
       isInfered: false,
       selectedInfer: null,
       inferClass: "",
+      adv_param: false
     };
   },
   methods: {
@@ -214,6 +252,13 @@ export default {
         console.log(e);
       }
     },
+    trainSetting: function () {
+      this.$bvModal.show("train");
+      this.adv_param = false;
+    },
+    addLayer: function () {
+      this.$bvModal.show("add-layer");
+    },
     onInference: function () {
       this.$bvModal.show("inference");
     }
@@ -259,6 +304,26 @@ $primary-color: #007e4e;
   height: 78px;
   display: flex;
   justify-content: flex-end;
+}
+.btn-wrap {
+  display: flex;
+  .base-btn {
+    border-radius: 15px 0 0 15px !important;
+  }
+  .setting {
+    background-color: #005534;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    border-radius: 0 15px 15px 0;
+    &:hover {
+      img {
+        opacity: 0.8;
+      }
+    }
+  }
 }
 .base-btn {
   color: white;
@@ -306,6 +371,36 @@ $primary-color: #007e4e;
   }
   span {
     font-weight: 600;
+  }
+}
+.train-setting {
+  input {
+    margin-bottom: 10px;
+  }
+  .btn {
+    background-color: #eee;
+  }
+  .adv {
+    margin-bottom: 10px;
+  }
+  .modal-check {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    input {
+      width: 20px;
+      height: 20px;
+      margin-right: 5px;
+    }
+  }
+  .modal-action-btn {
+    display: flex;
+    justify-content: flex-end;
+    .save {
+      background-color: $primary-color;
+      color: #ffffff;
+      margin-left: 10px;
+    }
   }
 }
 </style>
