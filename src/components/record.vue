@@ -204,7 +204,7 @@
               <div class="audio-actions">
                 <img @click="openMFCC" src="../assets/UI/svg/wave-icon.svg" height="20" class="op-btn" />
                 <img src="../assets/UI/svg/pause-icon.svg" v-if="isPlaying === idx" height="20" class="op-btn" @click="togglePlay($event, -1)" />
-                <img src="../assets/UI/svg/play-icon.svg" v-else height="20" class="op-btn" @click="togglePlay($event, idx)" />
+                <img src="sets/UI/svg/play-icon.svg" v-else height="20" class="op-btn" @click="togglePlay($event, idx)" />
               </div>
               <img src="../assets/UI/svg/cancel-icon.svg" height="32" class="op-btn" @click="deleteSound($event, idx)" />
             </div>

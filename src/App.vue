@@ -11,22 +11,22 @@
 </template>
 
 <script>
-import Main from './components/main.vue'
-import LoadingScreen from './components/LoadingScreen'
+import Main from "./components/main.vue";
+import LoadingScreen from "./components/LoadingScreen";
 /*import axios from 'axios'
 var axiosInstance = axios.create({
     baseURL: `${location.protocol}//${location.hostname}:3000`,
 })*/
 export default {
-  name: 'app',
+  name: "app",
   components: {
     Main,
-    LoadingScreen
+    LoadingScreen,
   },
   data() {
     return {
       isLoading: true,
-    }
+    };
   },
   /*mounted() {
  
@@ -42,12 +42,11 @@ export default {
             })
         }, 1500);
     }*/
-}
+};
 </script>
 
 <style lang="scss">
-
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;600;800&family=Sarabun:wght@200;400;600;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;600;800&family=Sarabun:wght@200;400;600;800&display=swap");
 
 #app {
   /*font-family: "Avenir", Helvetica, Arial, sans-serif;
@@ -62,7 +61,7 @@ export default {
   padding: 0;
   outline: none;
   box-sizing: border-box;
-  font-family: 'Poppins', 'Sarabun', sans-serif;
+  font-family: "Poppins", "Sarabun", sans-serif;
 }
 a {
   text-decoration: none;
@@ -81,7 +80,7 @@ ul {
       position: relative;
       opacity: 0.9;
       &::before {
-        content: '';
+        content: "";
         display: block;
         background-color: #ffffff;
         position: absolute;
@@ -108,7 +107,7 @@ ul {
     .modal-ttl {
       font-weight: bold;
       text-align: center;
-      color: #0090FF;
+      color: #0090ff;
       margin-bottom: 15px;
     }
     .modal-desc {
@@ -118,4 +117,7 @@ ul {
   }
 }
 
+.my-modal-class-no-pad > .modal-dialog > .modal-content > .modal-body {
+  padding: 0px !important;
+}
 </style>
