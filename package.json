@@ -51,6 +51,7 @@
     "vue-web-cam": "^1.9.0",
     "vue2-crop": "^1.0.2",
     "vuebar": "0.0.20",
+    "vuedraggable": "^2.24.3",
     "vuejs-clipper": "^1.1.8",
     "vuex": "^3.1.1",
     "waveform-data": "^3.3.4",

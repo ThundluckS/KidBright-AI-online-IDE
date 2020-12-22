@@ -1,7 +1,7 @@
 <template>
   <div style="height: 100vh; width: 100vw;">
     <b-input-group class="train-panel">
-      <!-- <b-input-group-prepend>
+      <b-input-group-prepend>
         <b-button class="btn-create" variant="primary" @click="onCreate"
           >Create</b-button
         >
@@ -10,7 +10,7 @@
         class="input-url"
         v-model="url"
         placeholder="Put Google Colab URL here . . ."
-      ></b-form-input> -->
+      ></b-form-input>
       <b-input-group-append>
         <button class="btn base-btn" :disabled="trainable" @click="onTrain()">
           <b-spinner v-if="loading" small type="grow"></b-spinner
