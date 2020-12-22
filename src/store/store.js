@@ -25,7 +25,8 @@ export default new Vuex.Store({
     rbServer: undefined,
     realtimeSound: [],
     device: 'robot',
-    inference: ''
+    inference: '',
+    projDescription: null
   },
 
   getters: {
@@ -45,7 +46,8 @@ export default new Vuex.Store({
     getRbServer: (state) => state.rbServer,
     getActiveDevice: (state) => state.device,
     getRealtimeSound: (state) => state.realtimeSound,
-    getInference: (state) => state.inference
+    getInference: (state) => state.inference,
+    getProjDescription: (state) => state.projDescription
   },
 
   mutations: {
@@ -94,15 +96,20 @@ export default new Vuex.Store({
     setInference(state, rosMessage) {
       state.inference = rosMessage
     },
+    setProjDescription(state, description) {
+      state.projDescription = description
+    },
   },
 
   actions: {
     // Here we will create Larry
-    setProjectDir({ commit, dispatch }, { name, type }) {
+    setProjectDir({ commit, dispatch }, { name, type, duration, delay }) {
       axiosInstance
         .post('createProject', {
           name,
-          type
+          type,
+          duration,
+          delay
         })
         .then((response) => {
           console.log(response.data)
@@ -138,9 +145,9 @@ export default new Vuex.Store({
           //return false;
         })
     },
-    reqProjects({ state, commit }) {
+    reqProjects({ state, commit }, type) {
       axiosInstance
-        .get(`/getProjects`)
+        .get(`/getProjects/${type}`)
         .then((response) => {
           if (response.data.status === 'OK') {
             commit('addProjects', response.data.projects)
@@ -209,6 +216,7 @@ export default new Vuex.Store({
           })
         }
         commit('addAudios', allFiles)
+        commit('setProjDescription', response.data.projDescription)
       })
     },
     reqAudiosClasses({ state, commit }) {

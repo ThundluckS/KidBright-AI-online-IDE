@@ -260,16 +260,7 @@
         <div class="w-100">
           <h5 class="side-panel-ttl">Recorder Settings</h5>
           <div class="feature-wrap">
-            <div class="item">
-              <p>Range</p>
-              <input type="number" max="3" min="1" v-model="duration" />
-              <p>sec.</p>
-            </div>
-            <div class="item">
-              <p>Delay</p>
-              <input type="number" min="0" v-model="delay" />
-              <p>ms.</p>
-            </div>
+            <p>Range {{ getProjDescription.Duration }} seconds, Delay {{ getProjDescription.Delay }} ms</p>
           </div>
         </div>
         <div class="center bottom-action">
@@ -346,8 +337,6 @@ export default {
       uploadPercentage: 0,
       isRecording: false,
       countDown: 3,
-      duration: 3,
-      delay: 1000,
       timeSpent: 0,
       options: {
         interact: false,
@@ -393,7 +382,7 @@ export default {
         this.recordByRobot();
         this.timeInterval = setInterval(() => {
           this.recordByRobot();
-        }, parseInt(this.duration) * 1000 + parseInt(this.delay));
+        }, parseInt(this.getProjDescription.Duration) * 1000 + parseInt(this.getProjDescription.Delay));
       }
     },
     countTimer() {
@@ -405,14 +394,14 @@ export default {
     recordByRobot() {
       axiosInstance.post("/robot/record", {
         project: this.getProjectDir,
-        duration: parseInt(this.duration),
+        duration: parseInt(this.getProjDescription.Duration),
       });
 
       setTimeout(() => {
         this.activeVoice = true;
         setTimeout(() => {
           this.activeVoice = false;
-        }, parseInt(parseInt(this.duration) * 1000));
+        }, parseInt(parseInt(this.getProjDescription.Duration) * 1000));
       }, parseInt(1500));
 
       // deactive speaking
@@ -478,7 +467,7 @@ export default {
   },
   mounted() {},
   computed: {
-    ...mapGetters(["getProjectDir", "getAudios", "getRealtimeSound"]),
+    ...mapGetters(["getProjectDir", "getAudios", "getRealtimeSound", "getProjDescription"]),
     countingTime: function () {
       return this.countDown;
     },
@@ -552,31 +541,10 @@ $primary-color: #007e4e;
     width: 100%;
   }
   .feature-wrap {
-    padding: 0 20px 10px;
+    padding: 2em;
     width: 100%;
-    .item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 0.5em;
-      color: #333333;
-      &:first-of-type {
-        margin-top: 1em;
-      }
-      input {
-        border-radius: 0.7em;
-        border: none;
-        padding: 0.2em;
-        text-indent: 0.5em;
-        margin: 0 1em;
-        width: 100px;
-        text-align: end;
-      }
-      p {
-        margin: 0;
-        width: 50px;
-      }
-    }
+    background: #E6E6E6;
+    border-radius: 20px;
   }
 
   .next {

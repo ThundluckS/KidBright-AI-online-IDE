@@ -12,7 +12,6 @@
           <div
             data-md-tooltip="เปิด Project ที่เคยสร้างไว้แล้ว"
             class="btn-base open"
-            v-on:click="getAllProjects"
             v-b-modal.modal_list_files
           />
           <div
@@ -330,7 +329,9 @@
         />
         <TrainLocal
           ref="trainLocalComponent"
-          v-if="getTrainingType === 'Image classification' && selectedMenu === 3"
+          v-if="
+            getTrainingType === 'Image classification' && selectedMenu === 3
+          "
         />
         <TrainAudio
           ref="trainLocalAudioComponent"
@@ -356,28 +357,65 @@
       @ok="handleOk"
     >
       <form ref="form" @submit.stop.prevent="handleSubmit">
-        <b-dropdown
-          id="dropdown-1"
-          :text="
-            typeSelect !== 'None'
-              ? typeSelect
-              : 'เลือกประเภทการเรียนรู้ (Select training type)'
-          "
-          class="mode-select"
-        >
-          <b-dropdown-item @click="handleSelect('Object detection')"
-            >การตรวจจับวัตถุ (Object detection)</b-dropdown-item
+        <b-form-group label="Project type">
+          <b-dropdown
+            id="dropdown-1"
+            :text="
+              typeSelect !== 'None'
+                ? typeSelect
+                : 'เลือกประเภทการเรียนรู้ (Select training type)'
+            "
+            class="mode-select"
           >
-          <b-dropdown-item @click="handleSelect('Image classification')"
-            >การแยกแยะรูปภาพ (Image classification)</b-dropdown-item
-          >
-          <b-dropdown-item @click="handleSelect('Sound')"
-            >Time series: Sound</b-dropdown-item
-          >
-          <b-dropdown-item @click="handleSelect('IMU sensor')"
+            <b-dropdown-item @click="handleSelect('Object detection')"
+              >การตรวจจับวัตถุ (Object detection)</b-dropdown-item
+            >
+            <b-dropdown-item @click="handleSelect('Image classification')"
+              >การแยกแยะรูปภาพ (Image classification)</b-dropdown-item
+            >
+            <b-dropdown-item @click="handleSelect('Sound')"
+              >Time series: Sound</b-dropdown-item
+            >
+            <!-- <b-dropdown-item @click="handleSelect('IMU sensor')"
             >Time series: IMU Sensor</b-dropdown-item
-          >
-        </b-dropdown>
+          > -->
+          </b-dropdown>
+        </b-form-group>
+        <b-form-group
+          v-if="typeSelect === 'Sound'"
+          :state="durationState"
+          label="Duration (s)"
+          label-for="duration-input"
+          invalid-feedback="Duration is required"
+        >
+          <b-form-input
+            id="duration-input"
+            v-model="duration"
+            :state="durationState"
+            min="0"
+            step="1"
+            max="3"
+            required
+          ></b-form-input>
+        </b-form-group>
+        <b-form-group
+          v-if="typeSelect === 'Sound'"
+          :state="delayState"
+          label="Delay (ms)"
+          label-for="name-input"
+          invalid-feedback="Delay is required"
+        >
+          <b-form-input
+            id="name-input"
+            v-model="delay"
+            :state="delayState"
+            type="number"
+            min="0"
+            step="1"
+            max="3000"
+            required
+          ></b-form-input>
+        </b-form-group>
         <b-form-group
           :state="nameState"
           label="Name"
@@ -427,9 +465,9 @@
         <b-dropdown-item @click="handleSelect('Sound')"
           >Time series: Sound</b-dropdown-item
         >
-        <b-dropdown-item @click="handleSelect('IMU sensor')"
+        <!-- <b-dropdown-item @click="handleSelect('IMU sensor')"
           >Time series: IMU Sensor</b-dropdown-item
-        >
+        > -->
       </b-dropdown>
       <p class="p-notice-color small">* กรุณาเลือกประเภทการเรียนรู้</p>
       <b-table
@@ -441,7 +479,7 @@
         selectable
         :select-mode="selectMode"
         selectedVariant="success"
-        :items="projectsName"
+        :items="getProjects.map((item) => ({ Projects: item }))"
         @row-selected="rowSelected"
         @row-clicked="rowClicked"
       >
@@ -463,7 +501,7 @@
         selectable
         :select-mode="selectMode"
         selectedVariant="success"
-        :items="projectsName"
+        :items="getProjects.map((item) => ({ Projects: item }))"
         @row-selected="rowDeleteSelected"
         @row-clicked="rowDeleteClicked"
       >
@@ -590,7 +628,11 @@ export default {
       selectedMenu: 4,
       activetab: 1,
       nameState: null,
+      durationState: null,
+      delayState: null,
       projectDirIn: "",
+      duration: "3",
+      delay: "1000",
       projectsName: [],
       projectsfromUSB: [],
       directorySelected: null,
@@ -629,7 +671,7 @@ export default {
       return (this.selected = items);
     },
     rowClicked: function (item, index) {
-      this.projectDirIn = this.projectsName[index].Projects;
+      this.projectDirIn = this.getProjects[index];
     },
     rowDeleteSelected(items) {
       //console.log(items)
@@ -639,9 +681,9 @@ export default {
     rowDeleteClicked: function (item, index) {
       this.$store.dispatch(
         "changeProjectDir",
-        this.projectsName[index].Projects
+        this.getProjects[index]
       );
-      this.deletingProject = this.projectsName[index].Projects;
+      this.deletingProject = this.getProjects[index];
     },
     handleProjectDelete: function (bvModalEvt) {
       if (this.deletingProject === null) {
@@ -652,32 +694,6 @@ export default {
     },
     deleteProject: function () {
       this.getAllProjects();
-    },
-    getAllProjects: function () {
-      this.$store.dispatch("reqProjects").then(
-        () => {
-          console.log(
-            "Got some data, now lets show something in this component"
-          );
-          var projectNames = this.$store.getters.getProjects;
-          while (this.projectsName.length) {
-            this.projectsName.pop();
-            this.selectedMenu = 1;
-          }
-          projectNames.forEach(
-            function (item) {
-              this.projectsName.push({
-                Projects: item,
-              });
-            }.bind(this)
-          );
-        },
-        () => {
-          console.error(
-            "Got nothing from server. Prompt user to check internet connection and try again"
-          );
-        }
-      );
     },
     async listDirectoriesFromUSB() {
       const res = await axiosInstance.get("/getDirectories");
@@ -857,6 +873,8 @@ export default {
       this.$store.dispatch("setProjectDir", {
         name: this.projectDirIn,
         type: this.typeSelect,
+        duration: this.duration,
+        delay: this.delay
       });
       // Hide the modal manually
       if (this.typeSelect !== "None" && this.projectDirIn !== "None") {
@@ -1343,6 +1361,11 @@ export default {
           : this.getImages.find((item) => item.isAnnotated))
       );
     },
+  },
+  watch: {
+    typeSelect: function(value) {
+      this.$store.dispatch('reqProjects', value)
+    }
   },
   props: {
     msg: String,

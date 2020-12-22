@@ -370,7 +370,7 @@ export default {
     },
     onInference: function () {
       let formData = new FormData();
-      formData.append("num_frame", "12");
+      formData.append("num_frame", `${this.getProjDescription.Duration * 4}`);
       formData.append("model_file", this.modelPath);
       formData.append("output_type", "categorical_crossentropy");
       formData.append("categorical_threshold", this.categorical_threshold);
@@ -404,6 +404,7 @@ export default {
       "getRealtimeSound",
       "getInference",
       "getAudiosClasses",
+      "getProjDescription"
     ]),
     trainable: function () {
       return this.loading;
