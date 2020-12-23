@@ -1,8 +1,5 @@
 <template>
-  <div
-    style="background: #d3d3d3; padding: 2em 0"
-    class="d-flex align-items-center"
-  >
+  <div style="padding: 2em 0" class="d-flex align-items-center">
     <b-container>
       <draggable
         v-model="model"
@@ -29,8 +26,8 @@
         </div>
         <b-card no-body class="mb-1" slot="footer">
           <b-card-header header-tag="header" class="p-1" role="tab">
-            <b-button block v-b-toggle.accordion-1 variant="info"
-              >Advance parameters</b-button
+            <b-button v-b-toggle.accordion-1 block
+              >Training parameters</b-button
             >
           </b-card-header>
           <b-collapse id="accordion-1" accordion="my-accordion" role="tabpanel">
@@ -146,14 +143,19 @@
           </b-collapse>
         </b-card>
       </draggable>
-      <div class="d-flex justify-content-between">
+      <!-- <div class="d-flex justify-content-between">
         <b-button v-b-modal.modal-1>Add new layer</b-button>
         <b-button variant="primary" @click="onSave">Save</b-button>
+      </div> -->
+      <div class="modal-action-btn">
+        <button class="btn" v-b-modal.modal-1>Add layer</button>
+        <button class="btn save" @click="onSave">Save</button>
       </div>
       <b-modal
         id="modal-1"
         title="Add new layer"
         ref="modal"
+        modal-class="my-modal-class"
         @show="resetModal"
         @hidden="resetModal"
         @ok="handleOk"
@@ -704,6 +706,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$primary-color: #007e4e;
+
 .box {
   border: solid 1px black;
   padding: 0.5em 1em;
@@ -737,6 +741,20 @@ export default {
   display: flex;
   input {
     width: 50%;
+  }
+}
+
+.modal-action-btn {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1em;
+  .btn {
+    background-color: #eee;
+  }
+  .save {
+    background-color: $primary-color;
+    color: #ffffff;
+    margin-left: 10px;
   }
 }
 </style>

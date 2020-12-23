@@ -1,21 +1,28 @@
 <template>
   <div style="height: 100vh; width: 100vw">
     <div class="train-panel">
-      <button class="btn base-btn" v-b-modal.setting>
-        Model Classification Setting
-      </button>
-      <button class="btn base-btn" v-b-modal.modify>Modify Model</button>
-      <button
-        :class="['btn base-btn', isDone ? 'btn-red' : '']"
-        :disabled="trainable"
-        @click="onTrain()"
-      >
-        <b-spinner v-if="loading" small type="grow"></b-spinner>
-        {{ isTraining ? "Training" : isDone ? "Train Complete" : "Train" }}
-      </button>
-      <button class="btn base-btn" :disabled="!isDone" @click="onInference">
-        Test
-      </button>
+      <div class="btn-wrap">
+        <button
+          :class="['btn base-btn', isDone ? 'btn-red' : '']"
+          :disabled="trainable"
+          @click="onTrain()"
+        >
+          <b-spinner v-if="loading" small type="grow"></b-spinner>
+          {{ isTraining ? "Training" : isDone ? "Train Complete" : "Train" }}
+        </button>
+        <div class="setting" v-b-modal.modify>
+          <img class="tag" src="../assets/UI/svg/settings.svg" height="24" />
+        </div>
+      </div>
+      <div class="btn-wrap">
+        <button class="btn base-btn" :disabled="!isDone" @click="onInference">
+          Test
+        </button>
+        <div class="setting" v-b-modal.setting>
+          <img class="tag" src="../assets/UI/svg/settings.svg" height="24" />
+        </div>
+      </div>
+
       <button class="btn base-btn" :disabled="!isDone" @click="onDownload">
         <b-spinner v-if="isDownloading" small type="grow"></b-spinner>
         Download
@@ -49,17 +56,11 @@
     <b-modal
       id="setting"
       centered
-      title="MODEL CLASSIFICATION"
+      title="Test Parameters"
       modal-class="my-modal-class"
       :hide-footer="true"
     >
-      <!-- <label for="wanted-word">Wanted word:</label> -->
-      <!-- <b-form-select
-        id="wanted-word"
-        :options="options"
-        v-model="wanted_word"
-      ></b-form-select> -->
-      <label for="learning-rate" class="mt-2">Learning rate:</label>
+      <!-- <label for="learning-rate" class="mt-2">Learning rate:</label>
       <b-form-input
         id="learning-rate"
         type="number"
@@ -75,7 +76,7 @@
         min="0"
         step="1"
         v-model="epochs"
-      ></b-form-input>
+      ></b-form-input> -->
       <label for="threshold" class="mt-2">Testing threshold:</label>
       <b-form-input
         id="threshold"
@@ -89,7 +90,7 @@
     <b-modal
       id="modify"
       centered
-      title="MODEL MODIFICATION"
+      title="Parameter Settings"
       modal-class="my-modal-class my-modal-class-no-pad"
       :hide-footer="true"
       size="xl"
@@ -279,14 +280,9 @@ export default {
       var training = initial_training_params;
       if (!this.isModified) {
         model[model.length - 1].units = this.getAudiosClasses.length;
-        training = {
-          ...training,
-          learning_rate: `${this.learning_rate}`,
-          epochs: `${this.epochs}`,
-        };
       } else {
         model = this.modifiedModel;
-        training = this.modifiedTraining
+        training = this.modifiedTraining;
       }
 
       this.loading = true;
@@ -305,14 +301,7 @@ export default {
         formData.append("wake_word", this.wanted_word);
         formData.append("is_image", "");
         formData.append("model_param", JSON.stringify(model));
-        formData.append(
-          "training_param",
-          JSON.stringify({
-            ...initial_training_params,
-            learning_rate: `${this.learning_rate}`,
-            epochs: `${this.epochs}`,
-          })
-        );
+        formData.append("training_param", JSON.stringify(training));
         formData.append("val_ratio", "0.1");
         formData.append("test_ratio", "0.1");
         let vm = this;
@@ -366,7 +355,7 @@ export default {
       this.modifiedModel = model;
       this.modifiedTraining = training;
       this.isModified = true;
-      this.$bvModal.hide("modify")
+      this.$bvModal.hide("modify");
     },
     onInference: function () {
       let formData = new FormData();
@@ -404,7 +393,7 @@ export default {
       "getRealtimeSound",
       "getInference",
       "getAudiosClasses",
-      "getProjDescription"
+      "getProjDescription",
     ]),
     trainable: function () {
       return this.loading;
@@ -479,6 +468,27 @@ $primary-color: #007e4e;
 
   span {
     font-weight: 600;
+  }
+}
+
+.btn-wrap {
+  display: flex;
+  .base-btn {
+    border-radius: 15px 0 0 15px !important;
+  }
+  .setting {
+    background-color: #005534;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    border-radius: 0 15px 15px 0;
+    &:hover {
+      img {
+        opacity: 0.8;
+      }
+    }
   }
 }
 </style>

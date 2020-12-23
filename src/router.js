@@ -10,6 +10,19 @@ export default new Router({
       path: "/",
       name: "welcome",
       component: LandingPage,
+      meta: {
+        title: 'Let\'s start - KidBright',
+        metaTags: [
+          {
+            name: 'description',
+            content: 'Let\'s start with KidBright.'
+          },
+          {
+            property: 'og:description',
+            content: 'Let\'s start with KidBright.'
+          }
+        ]
+      }
     },
     {
       path: "/home",
@@ -19,6 +32,19 @@ export default new Router({
       // which is lazy-loaded when the route is visited.
       component: () =>
         import(/* webpackChunkName: "about" */ "./views/Home.vue"),
+        meta: {
+          title: 'Main - KidBright',
+          metaTags: [
+            {
+              name: 'description',
+              content: 'KidBright AI Toolkit.'
+            },
+            {
+              property: 'og:description',
+              content: 'KidBright AI Toolkit.'
+            }
+          ]
+        }
     },
   ],
 });

@@ -324,7 +324,7 @@ export default {
       var ctx = c.getContext("2d");
       var img = this.$refs.displayImage;
       ctx.drawImage(img, 0, 0, 1280, 720);
-      const imgData64 = c.toDataURL("image/png");
+      const imgData64 = c.toDataURL("image/jpeg");
 
       return imgData64;
     },
