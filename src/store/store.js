@@ -206,7 +206,7 @@ export default new Vuex.Store({
           var wav = projectPath + '/wav/' + info[index].file
           var mfcc =
             projectPath + '/mfcc/image/' + info[index].file.split('.')[0] + '.jpg'
-          allFiles.unshift({
+          allFiles.push({
             fileName: info[index].file,
             wav,
             mfcc,

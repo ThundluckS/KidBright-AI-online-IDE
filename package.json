@@ -56,6 +56,7 @@
     "vuex": "^3.1.1",
     "waveform-data": "^3.3.4",
     "wavesurfer.js": "^4.2.0",
+    "web-audio-recorder-js": "0.0.2",
     "xml-js": "^1.6.11"
   },
   "devDependencies": {

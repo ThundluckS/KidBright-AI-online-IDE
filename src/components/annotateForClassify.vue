@@ -1,8 +1,13 @@
 <template>
   <div class="w-100 h-100">
     <div class="d-flex w-100 h-100 outer-wrap">
-      <div class="d-flex flex-fill flex-column main-panel" style="background-color: white">
-        <div class="d-flex flex-fill align-items-center justify-content-center view-panel">
+      <div
+        class="d-flex flex-fill flex-column main-panel"
+        style="background-color: white"
+      >
+        <div
+          class="d-flex flex-fill align-items-center justify-content-center view-panel"
+        >
           <!-- <div class="row">
             <b-col md="auto">
               <div class="image-container">
@@ -29,7 +34,15 @@
           <p class="desc" v-show="getImgSrc === null">
             No selected image, please click on the image below to select.
           </p>
-          <div class="img-counter"><span class="current-img">2</span><span class="ov-img">/ 999 IMAGES</span></div>
+          <div class="img-counter">
+            <span class="current-img">{{
+              imageActiveIndex.length > 0 ? imageActiveIndex[0] + 1 : null
+            }}</span
+            ><span class="ov-img"
+              >{{ imageActiveIndex.length > 0 ? "/" : null }}
+              {{ getImages.length }} IMAGES</span
+            >
+          </div>
         </div>
         <div class="img-slider">
           <div
@@ -69,10 +82,24 @@
               />
             </button>
             <div class="pills w-100">
-              <button type="button" @click="selectLabel(cls.label)" class="btn added-label w-100" v-for="(cls, index) in getImagesClasses" :key="index">
+              <button
+                type="button"
+                @click="selectLabel(cls.label)"
+                class="btn added-label w-100"
+                v-for="(cls, index) in getImagesClasses"
+                :key="index"
+              >
                 {{ cls.label }}
-                <div style="position: absolute; right: 15px" class="right-group">
-                  <img class="ml-2" src="../assets/UI/png/Group 114.png" @click.stop="deleteLabel(index)" height="22"/>
+                <div
+                  style="position: absolute; right: 15px"
+                  class="right-group"
+                >
+                  <img
+                    class="ml-2"
+                    src="../assets/UI/png/Group 114.png"
+                    @click.stop="deleteLabel(index)"
+                    height="22"
+                  />
                 </div>
               </button>
               <!-- <button type="button" class="btn added-label w-100">
@@ -104,9 +131,17 @@
           <h4 class="side-panel-ttl">ANNOTATE</h4>
           <div class="feature-wrap">
             <div class="annotate-cn-list w-100">
-              <div class="annotate-cn" v-for="(item, idx) in currentAnnotate" :key="'class-'+idx">
+              <div
+                class="annotate-cn"
+                v-for="(item, idx) in currentAnnotate"
+                :key="'class-' + idx"
+              >
                 <div class="annotate-cn-list-content">
-                  <img class="tag" src="../assets/UI/svg/Group 177_green.svg" height="24" />
+                  <img
+                    class="tag"
+                    src="../assets/UI/svg/Group 177_green.svg"
+                    height="24"
+                  />
                   <span class="annotation-txt">{{ item }}</span>
                 </div>
                 <img
@@ -320,79 +355,79 @@ $primary-color: #007e4e;
 }
 
 .pills {
-    overflow-y: auto;
+  overflow-y: auto;
 }
 
 .annotate-cn-list {
-    overflow-y: auto;
+  overflow-y: auto;
 }
 
 .annotate-cn {
-    text-align: left;
-    background-color: #ddd;
-    border-radius: 23px;
-    position: relative;
-    margin-bottom: 10px;
-    opacity: 0.7;
-    border: 5px solid #aaa;
-    cursor: pointer;
-    transition: opacity 0.3s ease-in;
+  text-align: left;
+  background-color: #ddd;
+  border-radius: 23px;
+  position: relative;
+  margin-bottom: 10px;
+  opacity: 0.7;
+  border: 5px solid #aaa;
+  cursor: pointer;
+  transition: opacity 0.3s ease-in;
+  overflow: hidden;
+
+  .annotate-cn-list-ttl {
+    background-color: #aaa;
+    padding: 5px 32px 5px 10px;
+    img {
+      width: 30px;
+      height: 30px;
+      &:last-child {
+        display: none;
+      }
+    }
+  }
+
+  .annotate-cn-list-content {
+    display: flex;
+    padding: 15px 10px;
+    align-items: center;
+    white-space: nowrap;
     overflow: hidden;
+    text-overflow: ellipsis;
+    .tag {
+      margin-right: 5px;
+    }
+  }
+
+  .annotation-txt {
+    color: $primary-color;
+    font-size: 1.3rem;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &.active {
+    border: 5px solid $primary-color;
+    opacity: 1;
 
     .annotate-cn-list-ttl {
-        background-color: #aaa;
-        padding: 5px 32px 5px 10px;
-        img {
-            width: 30px;
-            height: 30px;
-            &:last-child {
-                display: none;
-            }
+      background-color: $primary-color;
+      color: #fff;
+      img {
+        &:first-child {
+          display: none;
         }
-    }
-
-    .annotate-cn-list-content {
-        display: flex;
-        padding: 15px 10px;
-        align-items: center;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        .tag {
-          margin-right: 5px;
+        &:last-child {
+          display: inline-block;
         }
+      }
     }
+  }
 
-    .annotation-txt {
-        color: $primary-color;
-        font-size: 1.3rem;
-    }
-
-    &:last-child {
-        margin-bottom: 0;
-    }
-
-    &.active {
-        border: 5px solid $primary-color;
-        opacity: 1;
-
-        .annotate-cn-list-ttl {
-            background-color: $primary-color;
-            color: #fff;
-            img {
-                &:first-child {
-                    display: none;
-                }
-                &:last-child {
-                    display: inline-block;
-                }
-            }
-        }
-    }
-
-    &:hover {
-        opacity: 1;
-    }
+  &:hover {
+    opacity: 1;
+  }
 }
 
 .badge-icn {
@@ -472,44 +507,44 @@ $primary-color: #007e4e;
 }
 
 .side-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 300px;
+  overflow-y: auto;
+
+  .side-panel-ttl {
+    color: $primary-color;
+    font-weight: bold;
+    background: #cdcdcd;
+    padding: 10px 20px;
+    margin-bottom: 10px;
+  }
+  .feature-wrap {
+    padding: 0 20px 10px;
+  }
+  .next {
+    height: 50px;
+    background: #ffffff 0% 0% no-repeat padding-box;
+    border-radius: 38px;
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 300px;
-    overflow-y: auto;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-top: 15px;
 
-    .side-panel-ttl {
-        color: $primary-color;
-        font-weight: bold;
-        background: #CDCDCD;
-        padding: 10px 20px;
-        margin-bottom: 10px;
-    }
-    .feature-wrap {
-        padding: 0 20px 10px;
-    }
-    .next {
-        height: 50px;
-        background: #ffffff 0% 0% no-repeat padding-box;
-        border-radius: 38px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-        margin-top: 15px;
+    span {
+      color: $primary-color;
+      font-size: 1.5rem;
+      font-weight: 800;
 
-        span {
-            color: $primary-color;
-            font-size: 1.5rem;
-            font-weight: 800;
-
-            &.ico {
-                position: absolute;
-                top: 7px;
-                right: 18px;
-            }
-        }
+      &.ico {
+        position: absolute;
+        top: 7px;
+        right: 18px;
+      }
     }
+  }
 }
 
 .my-clipper {
@@ -680,20 +715,20 @@ body {
     color: #fff;
   }
   .img-counter {
-      position: absolute;
-      bottom: 30px;
-      right: 30px;
-      background-color: #fff;
-      border-radius: 19px;
-      padding: 10px 20px;
-      box-shadow: 0 0 10px #33333333;
-      span {
-          font-weight: bold;
-      }
-      .current-img {
-          color: $primary-color;
-          padding-right: 5px;
-      }
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+    background-color: #fff;
+    border-radius: 19px;
+    padding: 10px 20px;
+    box-shadow: 0 0 10px #33333333;
+    span {
+      font-weight: bold;
+    }
+    .current-img {
+      color: $primary-color;
+      padding-right: 5px;
+    }
   }
 }
 .img-slider {
@@ -720,47 +755,46 @@ body {
     transition: opacity 0.3s ease-in;
     cursor: pointer;
 
-        &.active,
-        &:hover {
-            opacity: 1;
-        }
-
-        &.active::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 100%;
-            border: 7px solid $primary-color;
-            border-radius: 20px;
-            pointer-events: none;
-        }
-
-        .thumb {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+    &.active,
+    &:hover {
+      opacity: 1;
     }
-    .annotated-btn {
-        position: absolute;
-        right: 10px;
-        top: 10px;
-        width: 30px;
-        height: 30px;
-        background-color: $primary-color;
-        border-radius: 50%;
-        width: 30px;
-        height: 30px;
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 800;
+
+    &.active::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      border: 7px solid $primary-color;
+      border-radius: 20px;
+      pointer-events: none;
     }
+
+    .thumb {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+  .annotated-btn {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 30px;
+    height: 30px;
+    background-color: $primary-color;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+  }
 }
-
 
 .annotate-box {
   border: 5px solid #007e4e;

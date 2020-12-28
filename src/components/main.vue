@@ -68,7 +68,6 @@
                 {{ currentWifi ? currentWifi : "No Internet" }}</b-btn
               >
               <b-btn
-                v-show="getTrainingType !== 'Sound'"
                 v-bind:class="'connection-' + getActiveDevice"
                 @click="onToggleDevice"
               >
@@ -679,10 +678,7 @@ export default {
       this.isProjectLoaded = true;
     },
     rowDeleteClicked: function (item, index) {
-      this.$store.dispatch(
-        "changeProjectDir",
-        this.getProjects[index]
-      );
+      this.$store.dispatch("changeProjectDir", this.getProjects[index]);
       this.deletingProject = this.getProjects[index];
     },
     handleProjectDelete: function (bvModalEvt) {
@@ -874,7 +870,7 @@ export default {
         name: this.projectDirIn,
         type: this.typeSelect,
         duration: this.duration,
-        delay: this.delay
+        delay: this.delay,
       });
       // Hide the modal manually
       if (this.typeSelect !== "None" && this.projectDirIn !== "None") {
@@ -883,6 +879,17 @@ export default {
           this.selectedMenu = 1;
           this.handleSelectSubmit();
           this.$store.dispatch("changeProjectDir", this.projectDirIn);
+          this.$nextTick(() => {
+            if (this.typeSelect === "Sound") {
+              this.$store.dispatch("reqAudios");
+              this.$store.dispatch("reqAudiosClasses");
+            } else if (this.typeSelect === "Object detection") {
+              this.$store.dispatch("reqImages", true);
+            } else {
+              this.$store.dispatch("reqImages", false);
+              this.$store.dispatch("reqImagesClasses");
+            }
+          });
         });
       } else {
         console.log("Training type is required.");
@@ -1363,9 +1370,9 @@ export default {
     },
   },
   watch: {
-    typeSelect: function(value) {
-      this.$store.dispatch('reqProjects', value)
-    }
+    typeSelect: function (value) {
+      this.$store.dispatch("reqProjects", value);
+    },
   },
   props: {
     msg: String,

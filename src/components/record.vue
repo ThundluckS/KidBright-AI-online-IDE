@@ -31,8 +31,18 @@
           >
             {{ countingTime }}
           </p>
+          <div
+            style="width: 100%; height: 100%"
+            v-show="
+              isRecording && countingTime === 0 && getActiveDevice !== 'robot'
+            "
+          >
+            <canvas id="waveform-client"></canvas>
+          </div>
           <WaveForm
-            v-if="isRecording && countingTime === 0"
+            v-if="
+              isRecording && countingTime === 0 && getActiveDevice === 'robot'
+            "
             :data="getRealtimeSound"
           />
           <div
@@ -75,7 +85,10 @@
             </div>
           </div>
         </div>
-        <div v-if="getAudiosLength > 0 && forceItemRender" style="padding: 1em; overflow-y: auto">
+        <div
+          v-if="getAudiosLength > 0 && forceItemRender"
+          style="padding: 1em; overflow-y: auto"
+        >
           <div v-for="(item, idx) in getAudios" :key="idx">
             <div
               :class="[
@@ -87,6 +100,20 @@
             >
               <div class="waveform-container">
                 <WaveSurfer :src="item.wav" :options="options" :play="false" />
+              </div>
+              <div class="tag-annotate">
+                <img
+                  v-show="idx !== 0"
+                  src="../assets/UI/svg/angle-arrow-up.svg"
+                  height="16"
+                  @click="changeOrder(idx, -1)"
+                />
+                <img
+                  v-show="idx !== getAudiosLength - 1"
+                  src="../assets/UI/svg/angle-arrow-down.svg"
+                  height="16"
+                  @click="changeOrder(idx, 1)"
+                />
               </div>
               <div class="audio-actions">
                 <img
@@ -119,151 +146,25 @@
             </div>
           </div>
         </div>
-        <!--
-        <div style="padding: 1em; overflow-y: auto;">
-          <div>
-            <div class="audio-item d-flex align-items-center justify-content-between" @click="onSelect($event)">
-              <div class="waveform-container">wave test</div>
-              <div class="audio-actions">
-                <img @click="openMFCC" src="../assets/UI/svg/wave-icon.svg" height="20" class="op-btn" />
-                <img src="../assets/UI/svg/pause-icon.svg" v-if="isPlaying === idx" height="20" class="op-btn" @click="togglePlay($event, -1)" />
-                <img src="../assets/UI/svg/play-icon.svg" v-else height="20" class="op-btn" @click="togglePlay($event, idx)" />
-              </div>
-              <img src="../assets/UI/svg/cancel-icon.svg" height="32" class="op-btn" @click="deleteSound($event, idx)" />
-            </div>
-          </div>
-          <div>
-            <div class="audio-item d-flex align-items-center justify-content-between" @click="onSelect($event)">
-              <div class="waveform-container">wave test</div>
-              <div class="audio-actions">
-                <img @click="openMFCC" src="../assets/UI/svg/wave-icon.svg" height="20" class="op-btn" />
-                <img src="../assets/UI/svg/pause-icon.svg" v-if="isPlaying === idx" height="20" class="op-btn" @click="togglePlay($event, -1)" />
-                <img src="../assets/UI/svg/play-icon.svg" v-else height="20" class="op-btn" @click="togglePlay($event, idx)" />
-              </div>
-              <img src="../assets/UI/svg/cancel-icon.svg" height="32" class="op-btn" @click="deleteSound($event, idx)" />
-            </div>
-          </div>
-          <div>
-            <div class="audio-item d-flex align-items-center justify-content-between" @click="onSelect($event)">
-              <div class="waveform-container">wave test</div>
-              <div class="audio-actions">
-                <img @click="openMFCC" src="../assets/UI/svg/wave-icon.svg" height="20" class="op-btn" />
-                <img src="../assets/UI/svg/pause-icon.svg" v-if="isPlaying === idx" height="20" class="op-btn" @click="togglePlay($event, -1)" />
-                <img src="../assets/UI/svg/play-icon.svg" v-else height="20" class="op-btn" @click="togglePlay($event, idx)" />
-              </div>
-              <img src="../assets/UI/svg/cancel-icon.svg" height="32" class="op-btn" @click="deleteSound($event, idx)" />
-            </div>
-          </div>
-          <div>
-            <div class="audio-item d-flex align-items-center justify-content-between" @click="onSelect($event)">
-              <div class="waveform-container">wave test</div>
-              <div class="audio-actions">
-                <img @click="openMFCC" src="../assets/UI/svg/wave-icon.svg" height="20" class="op-btn" />
-                <img src="../assets/UI/svg/pause-icon.svg" v-if="isPlaying === idx" height="20" class="op-btn" @click="togglePlay($event, -1)" />
-                <img src="../assets/UI/svg/play-icon.svg" v-else height="20" class="op-btn" @click="togglePlay($event, idx)" />
-              </div>
-              <img src="../assets/UI/svg/cancel-icon.svg" height="32" class="op-btn" @click="deleteSound($event, idx)" />
-            </div>
-          </div>
-          <div>
-            <div class="audio-item d-flex align-items-center justify-content-between" @click="onSelect($event)">
-              <div class="waveform-container">wave test</div>
-              <div class="audio-actions">
-                <img @click="openMFCC" src="../assets/UI/svg/wave-icon.svg" height="20" class="op-btn" />
-                <img src="../assets/UI/svg/pause-icon.svg" v-if="isPlaying === idx" height="20" class="op-btn" @click="togglePlay($event, -1)" />
-                <img src="../assets/UI/svg/play-icon.svg" v-else height="20" class="op-btn" @click="togglePlay($event, idx)" />
-              </div>
-              <img src="../assets/UI/svg/cancel-icon.svg" height="32" class="op-btn" @click="deleteSound($event, idx)" />
-            </div>
-          </div>
-          <div>
-            <div class="audio-item d-flex align-items-center justify-content-between" @click="onSelect($event)">
-              <div class="waveform-container">wave test</div>
-              <div class="audio-actions">
-                <img @click="openMFCC" src="../assets/UI/svg/wave-icon.svg" height="20" class="op-btn" />
-                <img src="../assets/UI/svg/pause-icon.svg" v-if="isPlaying === idx" height="20" class="op-btn" @click="togglePlay($event, -1)" />
-                <img src="../assets/UI/svg/play-icon.svg" v-else height="20" class="op-btn" @click="togglePlay($event, idx)" />
-              </div>
-              <img src="../assets/UI/svg/cancel-icon.svg" height="32" class="op-btn" @click="deleteSound($event, idx)" />
-            </div>
-          </div>
-          <div>
-            <div class="audio-item d-flex align-items-center justify-content-between" @click="onSelect($event)">
-              <div class="waveform-container">wave test</div>
-              <div class="audio-actions">
-                <img @click="openMFCC" src="../assets/UI/svg/wave-icon.svg" height="20" class="op-btn" />
-                <img src="../assets/UI/svg/pause-icon.svg" v-if="isPlaying === idx" height="20" class="op-btn" @click="togglePlay($event, -1)" />
-                <img src="../assets/UI/svg/play-icon.svg" v-else height="20" class="op-btn" @click="togglePlay($event, idx)" />
-              </div>
-              <img src="../assets/UI/svg/cancel-icon.svg" height="32" class="op-btn" @click="deleteSound($event, idx)" />
-            </div>
-          </div>
-          <div>
-            <div class="audio-item d-flex align-items-center justify-content-between" @click="onSelect($event)">
-              <div class="waveform-container">wave test</div>
-              <div class="audio-actions">
-                <img @click="openMFCC" src="../assets/UI/svg/wave-icon.svg" height="20" class="op-btn" />
-                <img src="../assets/UI/svg/pause-icon.svg" v-if="isPlaying === idx" height="20" class="op-btn" @click="togglePlay($event, -1)" />
-                <img src="sets/UI/svg/play-icon.svg" v-else height="20" class="op-btn" @click="togglePlay($event, idx)" />
-              </div>
-              <img src="../assets/UI/svg/cancel-icon.svg" height="32" class="op-btn" @click="deleteSound($event, idx)" />
-            </div>
-          </div>
-          <div>
-            <div class="audio-item d-flex align-items-center justify-content-between" @click="onSelect($event)">
-              <div class="waveform-container">wave test</div>
-              <div class="audio-actions">
-                <img @click="openMFCC" src="../assets/UI/svg/wave-icon.svg" height="20" class="op-btn" />
-                <img src="../assets/UI/svg/pause-icon.svg" v-if="isPlaying === idx" height="20" class="op-btn" @click="togglePlay($event, -1)" />
-                <img src="../assets/UI/svg/play-icon.svg" v-else height="20" class="op-btn" @click="togglePlay($event, idx)" />
-              </div>
-              <img src="../assets/UI/svg/cancel-icon.svg" height="32" class="op-btn" @click="deleteSound($event, idx)" />
-            </div>
-          </div>
-          <div>
-            <div class="audio-item d-flex align-items-center justify-content-between" @click="onSelect($event)">
-              <div class="waveform-container">wave test</div>
-              <div class="audio-actions">
-                <img @click="openMFCC" src="../assets/UI/svg/wave-icon.svg" height="20" class="op-btn" />
-                <img src="../assets/UI/svg/pause-icon.svg" v-if="isPlaying === idx" height="20" class="op-btn" @click="togglePlay($event, -1)" />
-                <img src="../assets/UI/svg/play-icon.svg" v-else height="20" class="op-btn" @click="togglePlay($event, idx)" />
-              </div>
-              <img src="../assets/UI/svg/cancel-icon.svg" height="32" class="op-btn" @click="deleteSound($event, idx)" />
-            </div>
-          </div>
-          <div>
-            <div class="audio-item d-flex align-items-center justify-content-between" @click="onSelect($event)">
-              <div class="waveform-container">wave test</div>
-              <div class="audio-actions">
-                <img @click="openMFCC" src="../assets/UI/svg/wave-icon.svg" height="20" class="op-btn" />
-                <img src="../assets/UI/svg/pause-icon.svg" v-if="isPlaying === idx" height="20" class="op-btn" @click="togglePlay($event, -1)" />
-                <img src="../assets/UI/svg/play-icon.svg" v-else height="20" class="op-btn" @click="togglePlay($event, idx)" />
-              </div>
-              <img src="../assets/UI/svg/cancel-icon.svg" height="32" class="op-btn" @click="deleteSound($event, idx)" />
-            </div>
-          </div>
-          <div>
-            <div class="audio-item d-flex align-items-center justify-content-between" @click="onSelect($event)">
-              <div class="waveform-container">wave test</div>
-              <div class="audio-actions">
-                <img @click="openMFCC" src="../assets/UI/svg/wave-icon.svg" height="20" class="op-btn" />
-                <img src="../assets/UI/svg/pause-icon.svg" v-if="isPlaying === idx" height="20" class="op-btn" @click="togglePlay($event, -1)" />
-                <img src="../assets/UI/svg/play-icon.svg" v-else height="20" class="op-btn" @click="togglePlay($event, idx)" />
-              </div>
-              <img src="../assets/UI/svg/cancel-icon.svg" height="32" class="op-btn" @click="deleteSound($event, idx)" />
-            </div>
-          </div>
-        </div>
-        -->
       </div>
       <div class="side-panel" style="width: 300px">
         <div class="w-100">
           <h5 class="side-panel-ttl">Recorder Settings</h5>
           <div class="feature-wrap">
-            <p>Range {{ getProjDescription.Duration }} seconds, Delay {{ getProjDescription.Delay }} ms</p>
+            <p>
+              Range {{ getProjDescription.Duration }} seconds, Delay
+              {{ getProjDescription.Delay }} ms
+            </p>
           </div>
         </div>
         <div class="center bottom-action">
+          <Recorder
+            v-if="getActiveDevice !== 'robot'"
+            :isRecording="isRecording"
+            :isShouldStart="activeVoice && getActiveDevice !== 'robot'"
+            :visualize="visualize"
+            :upload="uploadClientWAV"
+          />
           <img
             v-if="isRecording"
             class="camera-btn op-btn"
@@ -293,6 +194,7 @@ import "vue-awesome/icons";
 import { mapGetters } from "vuex";
 import WaveSurfer from "@/components/waveSurfer.vue";
 import WaveForm from "@/components/waveForm.vue";
+import Recorder from "@/components/recorder.vue";
 
 var axios_options = {
   proxy: {
@@ -312,6 +214,7 @@ export default {
   components: {
     WaveSurfer,
     WaveForm,
+    Recorder,
   },
   data() {
     return {
@@ -379,9 +282,13 @@ export default {
         }, 1000);
       } else {
         this.countTimer();
-        this.recordByRobot();
+        this.getActiveDevice === "robot"
+          ? this.recordByRobot()
+          : this.recordByClient();
         this.timeInterval = setInterval(() => {
-          this.recordByRobot();
+          this.getActiveDevice === "robot"
+            ? this.recordByRobot()
+            : this.recordByClient();
         }, parseInt(this.getProjDescription.Duration) * 1000 + parseInt(this.getProjDescription.Delay));
       }
     },
@@ -409,19 +316,38 @@ export default {
       // this.activeVoice = true;
       console.log("call robot record");
     },
-    stopRecordByRobot() {
-      // axiosInstance.post("/robot/record/stop").then((response) => {
-      //   console.log(response.data);
-      // });
+    recordByClient() {
+      this.activeVoice = true;
+      setTimeout(() => {
+        this.activeVoice = false;
+      }, parseInt(parseInt(this.getProjDescription.Duration) * 1000));
+    },
+    changeOrder(idx, direction) {
+      var lastOrder = this.getAudios.map((e) => e.fileName);
+      var temp = lastOrder[idx];
+      lastOrder[idx] = lastOrder[idx + direction];
+      lastOrder[idx + direction] = temp;
+
+      axiosInstance
+        .put(`/wav/${this.getProjectDir}/order`, { order: lastOrder })
+        .then((response) => {
+          this.$store.dispatch("reqAudios");
+        });
+    },
+    stopRecord() {
       clearInterval(this.timeInterval);
-      this.$store.dispatch("reqAudios");
       console.log("Stop recording");
+      axiosInstance
+        .post(`/wav/${this.getProjectDir}/order/add`)
+        .then((response) => {
+          this.$store.dispatch("reqAudios");
+        });
     },
     onRecord() {
       if (this.isRecording) {
         // start recording here
         this.isRecording = false;
-        this.stopRecordByRobot();
+        this.stopRecord();
         this.countDown = 3;
         this.timeSpent = 0;
       } else {
@@ -464,10 +390,77 @@ export default {
     onSetDuration: function (time) {
       this.timeDuration = time;
     },
+    visualize: function (audioCtx, stream, mediaStreamSource) {
+      const canvas = document.getElementById("waveform-client");
+      const ctx = canvas.getContext("2d");
+      var analyser = audioCtx.createAnalyser();
+      analyser.fftSize = 2048;
+      var bufferLength = analyser.frequencyBinCount;
+      var dataArray = new Uint8Array(bufferLength);
+
+      mediaStreamSource.connect(analyser);
+
+      draw();
+
+      function draw() {
+        requestAnimationFrame(draw);
+
+        analyser.getByteTimeDomainData(dataArray);
+
+        canvas.style.width = "100%";
+        canvas.style.height = "100%";
+
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = "rgb(255, 255, 255)";
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.beginPath();
+
+        var sliceWidth = (canvas.width * 1.0) / bufferLength;
+        var x = 0;
+
+        for (var i = 0; i < bufferLength; i++) {
+          var v = dataArray[i] / 128.0;
+          var y = (v * canvas.height) / 2;
+
+          if (i === 0) {
+            ctx.moveTo(x, y);
+          } else {
+            ctx.lineTo(x, y);
+          }
+
+          x += sliceWidth;
+        }
+
+        ctx.lineTo(canvas.width, canvas.height / 2);
+        ctx.stroke();
+        ctx.closePath();
+      }
+    },
+    uploadClientWAV: function (blob) {
+      var reader = new FileReader();
+      var vm = this;
+      reader.readAsDataURL(blob);
+      reader.onloadend = function () {
+        var base64 = reader.result;
+        axiosInstance.post(`/wav/${vm.getProjectDir}/client/upload`, { base64 }).then(response => {
+          console.log('upload completed.')
+        })
+      };
+    },
   },
   mounted() {},
   computed: {
-    ...mapGetters(["getProjectDir", "getAudios", "getRealtimeSound", "getProjDescription"]),
+    ...mapGetters([
+      "getProjectDir",
+      "getAudios",
+      "getRealtimeSound",
+      "getProjDescription",
+      "getActiveDevice",
+    ]),
     countingTime: function () {
       return this.countDown;
     },
@@ -543,7 +536,7 @@ $primary-color: #007e4e;
   .feature-wrap {
     padding: 2em;
     width: 100%;
-    background: #E6E6E6;
+    background: #e6e6e6;
     border-radius: 20px;
   }
 
@@ -767,5 +760,16 @@ $primary-color: #007e4e;
   input[type="range"] {
     width: 60px;
   }
+}
+.tag-annotate {
+  border-radius: 50%;
+  background: white;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.3em;
 }
 </style>
