@@ -55,6 +55,19 @@
               ><img src="../assets/UI/svg/Group 80.svg" alt="" srcset=""
             /></span>
           </button>
+
+          <button
+            v-if="!isRunning"
+            :disabled="isProjectLoaded"
+            pill
+            v-on:click="$emit('save-workspace')"
+            class="btn-run"
+            style="margin-left:10px;">
+            <span class="ico">
+              <img src="../assets/UI/svg/save.svg" alt="" srcset=""/>
+            </span>
+          </button>
+
           <button
             v-if="isRunning"
             :disabled="!isProjectLoaded"
@@ -361,7 +374,7 @@ export default {
 
   </xml>`;
 
-    //this.code = blocklyPython.workspaceToCode(this.blockly_woakspace);
+    // this.code = blocklyPython.workspaceToCode(this.blockly_woakspace);
 
     Blockly.readPythonFile = function (file) {
       var rawFile = new XMLHttpRequest();
@@ -694,6 +707,16 @@ export default {
 
       var blckDiv = this.$refs["blocklyDiv"];
       this.blockly_woakspace = Blockly.inject(this.$refs["blocklyDiv"], tt);
+
+      // var workspace = Blockly.inject(this.$refs["blocklyDiv"], tt);
+      // this.blockly_woakspace.addChangeListener( function (event){
+      //   let xml = Blockly.Xml.workspaceToDom(workspace);
+      //   let domToPretty = Blockly.Xml.domToPrettyText(xml);
+      //   window.localStorage.setItem("aiBlockly", domToPretty);
+      //   // let textToDom = Blockly.Xml.textToDom(this.blockly_xml);
+      //   // Blockly.Xml.domToWorkspace(this.blockly_woakspace, textToDom);
+      // });
+
       this.$store.commit("setBlocklyWorkspace", this.blockly_woakspace);
       console.log("Injection running ***********************************");
       //console.log(this.blockly_woakspace)
@@ -715,14 +738,16 @@ export default {
   created() {
     this.unsubscribe = this.$store.subscribe((mutation, state) => {
       if (mutation.type === "setBlocklyXml") {
-        console.log("updating xml !!!!!!!!!");
-        //console.log(state.blockly_xml)
-        this.blockly_xml = state.blockly_xml;
-        // console.log(this.blockly_xml)
-        //this.blockly_woakspace = state.blockly_xml
-        this.blockly_woakspace.clear();
-        let textToDom = Blockly.Xml.textToDom(this.blockly_xml);
-        Blockly.Xml.domToWorkspace(this.blockly_woakspace, textToDom);
+        setTimeout(() => {
+          console.log("updating xml !!!!!!!!!");
+          //console.log(state.blockly_xml)
+          this.blockly_xml = state.blockly_xml;
+          // console.log('blockly_xml == ',this.blockly_xml)
+          //this.blockly_woakspace = state.blockly_xml
+          this.blockly_woakspace.clear();
+          let textToDom = Blockly.Xml.textToDom(this.blockly_xml);
+          Blockly.Xml.domToWorkspace(this.blockly_woakspace, textToDom);
+        }, 500);
       }
     });
   },

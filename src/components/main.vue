@@ -343,6 +343,7 @@
           v-if="selectedMenu === 4"
           v-on:run="showCode()"
           v-on:stop-run="stopRun()"
+          v-on:save-workspace="saveWorkspace()"
         />
       </div>
     </div>
@@ -928,6 +929,7 @@ export default {
       // --clear filled form --
     },
     handleTabChange(tabIndex) {
+      console.log('handleTabChange:: ',tabIndex)
       // Because without using v-tab, Then index start with 1
       this.selectedMenu = tabIndex;
       if (tabIndex === 1 && this.loaded === false) {
@@ -935,6 +937,7 @@ export default {
       }
       if (tabIndex === 4) {
         this.isRunHiden = true;
+        this.loadWorkspace();
       } else {
         this.isRunHiden = false;
       }
@@ -1023,6 +1026,7 @@ export default {
         });
     },
     saveWorkspace() {
+      console.log('saving ok');
       var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
       let domToPretty = Blockly.Xml.domToPrettyText(xml);
       axiosInstance

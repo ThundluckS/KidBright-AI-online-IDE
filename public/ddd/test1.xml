@@ -1,0 +1,15 @@
+<xml xmlns="https://developers.google.com/blockly/xml">
+  <block type="text_print" id="fb`f#:_x;93s(+--%lu)" x="-157" y="-152">
+    <value name="TEXT">
+      <block type="text" id="p+v+/X%bzw^R3{OSK{6B">
+        <field name="TEXT">22</field>
+      </block>
+    </value>
+  </block>
+  <block type="text_print" id="f51ATgz%nEOeGuTD/.Ot" x="-172" y="-62"></block>
+  <block type="lists_create_with" id="1$$5t@k,6_8J}7`Z^dv2" x="190" y="-50">
+    <mutation items="3"></mutation>
+  </block>
+  <block type="text_length" id="[]-;Gg1PQPG2naj1rV~$" x="22" y="-11"></block>
+  <block type="text_print" id="oQ,Vbuyf8Ds%(YZt.=e9" x="179" y="150"></block>
+</xml>
