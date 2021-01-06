@@ -155,8 +155,6 @@ var axiosInstance = axios.create({
   baseURL: `${location.protocol}//${location.hostname}:3000`,
 });
 
-import { mapGetters } from "vuex";
-
 export default {
   name: "BlocklyComponent",
   props: {
@@ -193,7 +191,6 @@ export default {
       let textToDom = Blockly.Xml.textToDom(this.blockly_xml);
       Blockly.Xml.domToWorkspace(this.blockly_woakspace, textToDom);
     },
-
     updateOutput: function () {
       console.log("NDisplay =");
       console.log(this.nDisplay);
@@ -707,16 +704,6 @@ export default {
 
       var blckDiv = this.$refs["blocklyDiv"];
       this.blockly_woakspace = Blockly.inject(this.$refs["blocklyDiv"], tt);
-
-      // var workspace = Blockly.inject(this.$refs["blocklyDiv"], tt);
-      // this.blockly_woakspace.addChangeListener( function (event){
-      //   let xml = Blockly.Xml.workspaceToDom(workspace);
-      //   let domToPretty = Blockly.Xml.domToPrettyText(xml);
-      //   window.localStorage.setItem("aiBlockly", domToPretty);
-      //   // let textToDom = Blockly.Xml.textToDom(this.blockly_xml);
-      //   // Blockly.Xml.domToWorkspace(this.blockly_woakspace, textToDom);
-      // });
-
       this.$store.commit("setBlocklyWorkspace", this.blockly_woakspace);
       console.log("Injection running ***********************************");
       //console.log(this.blockly_woakspace)
