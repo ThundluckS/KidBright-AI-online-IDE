@@ -40,13 +40,13 @@
           ></b-img>
           <p class="view-img-desc" v-show="getImgSrc === null">No selected image, please click on the image below to select.</p> -->
           <div class="img-counter">
-            <span class="current-img">{{
-              imageActiveIndex !== -1 ? imageActiveIndex + 1 : null
-            }}</span
-            ><span class="ov-img"
-              >{{ imageActiveIndex !== -1 ? "/" : null }}
-              {{ getImages.length }} IMAGES</span
-            >
+            <span class="current-img">
+              {{imageActiveIndex !== -1 ? imageActiveIndex + 1 : null}}
+            </span>
+            <span class="ov-img">
+              {{ imageActiveIndex !== -1 ? "/" : null }}
+              {{ getImages.length }} IMAGES
+            </span>
           </div>
         </div>
         <div class="img-slider">
@@ -553,15 +553,23 @@ export default {
       else this.onStart();
     },
     imageActiveIndex: function (index) {
-      this.imgSrc = this.getImages[index].file;
-      this.selectedFile = this.getImages[index].fileName;
+      if(index != -1){
+        this.imgSrc = this.getImages[index].file;
+        this.selectedFile = this.getImages[index].fileName;
+      }
     },
     getImages: function () {
-      if (this.imageActiveIndex === 0) {
+      if (this.imageActiveIndex === 0 && this.getImages[0] != undefined) {
         this.imgSrc = this.getImages[0].file;
         this.selectedFile = this.getImages[0].fileName;
-      } else {
-        this.imageActiveIndex = 0;
+      }else{
+        this.imgSrc = null;
+        this.imageActiveIndex = -1;
+        // this.imageActiveIndex = 0;
+        console.log('Import : ',{
+          'this.import':this.import,
+          'this.importDone':this.importDone
+        })
       }
     },
     importDone: function (value) {

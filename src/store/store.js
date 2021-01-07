@@ -19,7 +19,7 @@ export default new Vuex.Store({
     isProjectOpen: false,
     sCmdVel: null,
     trainingType: 'None',
-    blockly_workspace: null,
+    blockly_woakspace: null,
     blockly_xml: '',
     usb_path: '',
     rbServer: undefined,
@@ -40,17 +40,20 @@ export default new Vuex.Store({
     getProjectStatus: (state) => state.isProjectOpen,
     getCmdVel: (state) => state.sCmdVel,
     getTrainingType: (state) => state.trainingType,
-    getBlocklyWorkspace: (state) => state.blockly_workspace,
+    getBlocklyWorkspace: (state) => state.blockly_woakspace,
     getBlocklyXml: (state) => state.blockly_xml,
     getUsbPath: (state) => state.usb_path,
     getRbServer: (state) => state.rbServer,
     getActiveDevice: (state) => state.device,
     getRealtimeSound: (state) => state.realtimeSound,
     getInference: (state) => state.inference,
-    getProjDescription: (state) => state.projDescription
+    getProjDescription: (state) => state.projDescription,
   },
 
   mutations: {
+    
+    ['RESET_IMAGE']: state => state.images = [],
+
     setProjectDir(state, proDir) {
       state.projectDir = proDir
     },
@@ -75,8 +78,9 @@ export default new Vuex.Store({
     setTrainingType(state, type) {
       state.trainingType = type
     },
-    setBlocklyWorkspace(state, blockly_workspace) {
-      state.blockly_workspace = blockly_workspace
+    setBlocklyWorkspace(state, blockly_woakspace) {
+      state.blockly_woakspace = blockly_woakspace
+      console.log(state)
     },
     setBlocklyXml(state, blockly_xml) {
       state.blockly_xml = blockly_xml
@@ -252,8 +256,10 @@ export default new Vuex.Store({
     setBlocklyXml({ commit }, blockly_xml) {
       commit('setBlocklyXml', blockly_xml)
     },
-    clearBlocklyWorkspace({ state }) {
-      state.blockly_workspace.clear()
+    clearBlocklyWorkspace({ state, commit }) {
+      state.blockly_woakspace.clear()
+      commit('RESET_IMAGE')
+      console.log('WorkSpace Cleared')
     },
     toggleActiveDevice({ state, commit }) {
       if (state.device === 'robot') {

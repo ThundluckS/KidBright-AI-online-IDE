@@ -343,6 +343,7 @@
           v-if="selectedMenu === 4"
           v-on:run="showCode()"
           v-on:stop-run="stopRun()"
+          v-on:save-workspace="saveWorkspace()"
         />
       </div>
     </div>
@@ -895,6 +896,22 @@ export default {
         console.log("Training type is required.");
       }
       this.$store.dispatch("clearBlocklyWorkspace");
+      if(this.getProjectDir !== 'None'){
+        this.handleTabChange(1);
+        console.log('New project active 11')
+      }
+
+      //  <li
+      //         :class="{
+      //           current: selectedMenu === 1,
+      //           inactive: getProjectDir === 'None',
+      //         }"
+      //         @click="getProjectDir !== 'None' && handleTabChange(1)"
+      //       >
+      //         <img src="../assets/UI/png/capture.png" alt="" srcset="" />
+      //       </li>
+
+
     },
     openProject(bvModalEvt) {
       // Prevent modal from closing
@@ -908,7 +925,7 @@ export default {
         this.$store.dispatch("changeProjectDir", this.projectDirIn);
         this.$nextTick(() => {
           this.$refs.openModal.hide();
-          this.loadWorkspace();
+          this.loadWorkspace(true);
           this.isProjectLoaded = false;
           if (this.getTrainingType === "Sound") {
             this.$store.dispatch("reqAudios");
@@ -935,6 +952,7 @@ export default {
       }
       if (tabIndex === 4) {
         this.isRunHiden = true;
+        this.loadWorkspace();
       } else {
         this.isRunHiden = false;
       }
@@ -1023,6 +1041,7 @@ export default {
         });
     },
     saveWorkspace() {
+      console.log('saving ok');
       var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
       let domToPretty = Blockly.Xml.domToPrettyText(xml);
       axiosInstance
@@ -1036,8 +1055,12 @@ export default {
         });
       console.log(xml);
     },
-    loadWorkspace() {
+    loadWorkspace(setFirstTab = false) {
+
       this.$store.dispatch("clearBlocklyWorkspace");
+      if(this.getProjectDir !== 'None' && setFirstTab == true){
+        this.handleTabChange(1);
+      }
 
       axiosInstance
         .post("getXML", {
@@ -1344,7 +1367,7 @@ export default {
       "getTrainingType",
       "getBlocklyWorkspace",
       "getActiveDevice",
-      "getAudios",
+      "getAudios"
     ]),
     getImgSrc: function () {
       return this.url;

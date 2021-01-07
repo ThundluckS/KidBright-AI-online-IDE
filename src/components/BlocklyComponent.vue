@@ -55,6 +55,19 @@
               ><img src="../assets/UI/svg/Group 80.svg" alt="" srcset=""
             /></span>
           </button>
+
+          <button
+            v-if="!isRunning"
+            :disabled="isProjectLoaded"
+            pill
+            v-on:click="$emit('save-workspace')"
+            class="btn-run"
+            style="margin-left:10px;">
+            <span class="ico">
+              <img src="../assets/UI/svg/save.svg" alt="" srcset=""/>
+            </span>
+          </button>
+
           <button
             v-if="isRunning"
             :disabled="!isProjectLoaded"
@@ -142,8 +155,6 @@ var axiosInstance = axios.create({
   baseURL: `${location.protocol}//${location.hostname}:3000`,
 });
 
-import { mapGetters } from "vuex";
-
 export default {
   name: "BlocklyComponent",
   props: {
@@ -180,7 +191,6 @@ export default {
       let textToDom = Blockly.Xml.textToDom(this.blockly_xml);
       Blockly.Xml.domToWorkspace(this.blockly_woakspace, textToDom);
     },
-
     updateOutput: function () {
       console.log("NDisplay =");
       console.log(this.nDisplay);
@@ -363,7 +373,7 @@ export default {
 
   </xml>`;
 
-    //this.code = blocklyPython.workspaceToCode(this.blockly_woakspace);
+    // this.code = blocklyPython.workspaceToCode(this.blockly_woakspace);
 
     Blockly.readPythonFile = function (file) {
       var rawFile = new XMLHttpRequest();
@@ -783,14 +793,16 @@ export default {
   created() {
     this.unsubscribe = this.$store.subscribe((mutation, state) => {
       if (mutation.type === "setBlocklyXml") {
-        console.log("updating xml !!!!!!!!!");
-        //console.log(state.blockly_xml)
-        this.blockly_xml = state.blockly_xml;
-        // console.log(this.blockly_xml)
-        //this.blockly_woakspace = state.blockly_xml
-        this.blockly_woakspace.clear();
-        let textToDom = Blockly.Xml.textToDom(this.blockly_xml);
-        Blockly.Xml.domToWorkspace(this.blockly_woakspace, textToDom);
+        setTimeout(() => {
+          console.log("updating xml !!!!!!!!!");
+          //console.log(state.blockly_xml)
+          this.blockly_xml = state.blockly_xml;
+          // console.log('blockly_xml == ',this.blockly_xml)
+          //this.blockly_woakspace = state.blockly_xml
+          this.blockly_woakspace.clear();
+          let textToDom = Blockly.Xml.textToDom(this.blockly_xml);
+          Blockly.Xml.domToWorkspace(this.blockly_woakspace, textToDom);
+        }, 500);
       }
     });
   },
