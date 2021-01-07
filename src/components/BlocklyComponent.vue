@@ -350,10 +350,12 @@ export default {
       <block type="init_ros_node"></block>
       <block type="start_object_detector"></block>
       <block type="start_image_classification"></block>
+      <block type="start_wake_word_detector"></block>
       <block type="rospy_loop"></block>
       <block type="get_objects"></block>
       <block type="get_classes"></block>
-      
+      <block type="get_sound"></block>
+
       <block type="get_object_attr"></block>
       <block type="set_velocity"></block>
       <block type="delay"></block>
@@ -425,13 +427,50 @@ export default {
       return cc;
     }.bind(this);
 
+    Blockly.Python["start_wake_word_detector"] = function (block) {
+      //var code = Blockly.readPythonFile("/getPython" + "?file=start_object_detector.py")
+      //var code1 = code.toString().split("\n");
+      //console.log("Split code")
+      //code1.splice(6, 0, "\tcommand=\'rosrun kidbright_tpu tpu_detect.py\'");
+      //var text = code1.join("\n");
+      //console.log(this.$store.getters.getProjectDir )
+      var dur = this.$store.getters.getProjDescription
+      //console.log("==========> Duraion is =======>");
+      //console.log(dur.Duration*4);
+      var nf = dur.Duration*4
+      var cc =
+        "import rosnode\nimport subprocess\nimport time\nimport os\nros_nodes = rosnode.get_node_names()\nif not '/wake_class_wait' in ros_nodes:\n";
+      cc =
+        cc +
+        "\tcommand='rosrun kidbright_tpu wakeword_classify.py " +
+        "_terminate:=False "  +
+        "_model:=" +
+        process.env.VUE_APP_ROOT +
+        "/" +
+        this.$store.getters.getProjectDir +
+        "/audios/model.h5 " + 
+        "label_file:=" +
+        process.env.VUE_APP_ROOT +
+        "/" +
+        this.$store.getters.getProjectDir +
+        "/audios/label_map.pkl " +
+        "_nframe:=" + 
+        nf.toString() +
+        "'\n";
+      cc =
+        cc +
+        "\tprocess = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)\n\ttime.sleep(10) \n";
+
+      return cc;
+    }.bind(this);
+
     Blockly.Python["init_ros_node"] = function (block) {
       var code =
         "from geometry_msgs.msg import Twist\nimport rospy\nimport time\nrospy.init_node('get_center', anonymous=True)\nvelocity_publisher = rospy.Publisher('/cmd_vel', Twist, queue_size=1)\nvel_msg = Twist()\n";
 
       code =
         code +
-        "import roslib\nimport rospy\nfrom kidbright_tpu.msg import tpu_object\nfrom kidbright_tpu.msg import tpu_objects \n";
+        "import roslib\nimport rospy\nfrom kidbright_tpu.msg import tpu_object\nfrom kidbright_tpu.msg import tpu_objects\nfrom std_msgs.msg import String\n";
       return code;
     };
 
@@ -479,6 +518,16 @@ export default {
       },
     };
 
+    Blockly.Blocks["get_sound"] = {
+      init: function () {
+        this.appendDummyInput().appendField("get sound");
+        this.setOutput(true, null);
+        this.setColour(230);
+        this.setTooltip("");
+        this.setHelpUrl("");
+      },
+    };
+
     Blockly.Blocks["sumorobot_opponent"] = {
       init: function () {
         this.setColour("#0099E6");
@@ -501,6 +550,17 @@ export default {
     Blockly.Blocks["start_image_classification"] = {
       init: function () {
         this.appendDummyInput().appendField("Start image classification");
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour(230);
+        this.setTooltip("");
+        this.setHelpUrl("");
+      },
+    };
+
+    Blockly.Blocks["start_wake_word_detector"] = {
+      init: function () {
+        this.appendDummyInput().appendField("Start wake word detector");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(230);
@@ -662,6 +722,14 @@ export default {
       // TODO: Assemble Python into code variable.
       var code =
         "rospy.wait_for_message('/tpu_objects', tpu_objects, timeout=4).tpu_objects";
+      // TODO: Change ORDER_NONE to the correct strength.
+      return [code, Blockly.Python.ORDER_NONE];
+    };
+
+    Blockly.Python["get_sound"] = function (block) {
+      // TODO: Assemble Python into code variable.
+      var code =
+        "rospy.wait_for_message('/inference', String, timeout=4).data";
       // TODO: Change ORDER_NONE to the correct strength.
       return [code, Blockly.Python.ORDER_NONE];
     };
