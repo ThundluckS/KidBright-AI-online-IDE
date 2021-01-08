@@ -26,11 +26,11 @@ export default new Vuex.Store({
     realtimeSound: [],
     device: 'robot',
     inference: '',
-    // projDescription: null
-    projDescription: {
-      Delay: 1000,
-      Duration: 3
-    }
+    projDescription: null
+    // projDescription: {
+    //   Delay: 1000,
+    //   Duration: 3
+    // }
   },
 
   getters: {
