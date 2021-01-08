@@ -56,7 +56,7 @@
             /></span>
           </button>
 
-          <button
+          <!-- <button
             v-if="!isRunning"
             :disabled="isProjectLoaded"
             pill
@@ -66,7 +66,7 @@
             <span class="ico">
               <img src="../assets/UI/svg/save.svg" alt="" srcset=""/>
             </span>
-          </button>
+          </button> -->
 
           <button
             v-if="isRunning"

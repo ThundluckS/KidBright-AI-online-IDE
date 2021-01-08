@@ -6,4 +6,15 @@
       </block>
     </value>
   </block>
+  <block type="text_print" id="Q[MkZU4?a@ss?ltxvcx:" x="272" y="167">
+    <value name="TEXT">
+      <block type="text_length" id="X=#s|5;)zErVi1ztGY~r">
+        <value name="VALUE">
+          <block type="text" id="i:PBB|)QjOgZ^eH(4YHv">
+            <field name="TEXT"></field>
+          </block>
+        </value>
+      </block>
+    </value>
+  </block>
 </xml>

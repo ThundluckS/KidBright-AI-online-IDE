@@ -26,7 +26,11 @@ export default new Vuex.Store({
     realtimeSound: [],
     device: 'robot',
     inference: '',
-    projDescription: null
+    // projDescription: null
+    projDescription: {
+      Delay: 1000,
+      Duration: 3
+    }
   },
 
   getters: {
@@ -208,8 +212,7 @@ export default new Vuex.Store({
         for (index = 0, len = info.length; index < len; ++index) {
           var projectPath = response.data.projectDir + response.data.folder
           var wav = projectPath + '/wav/' + info[index].file
-          var mfcc =
-            projectPath + '/mfcc/image/' + info[index].file.split('.')[0] + '.jpg'
+          var mfcc = projectPath + '/mfcc/image/' + info[index].file.split('.')[0] + '.jpg'
           allFiles.push({
             fileName: info[index].file,
             wav,
@@ -258,7 +261,7 @@ export default new Vuex.Store({
     },
     clearBlocklyWorkspace({ state, commit }) {
       state.blockly_woakspace.clear()
-      commit('RESET_IMAGE')
+      // commit('RESET_IMAGE')
       console.log('WorkSpace Cleared')
     },
     toggleActiveDevice({ state, commit }) {
