@@ -85,64 +85,78 @@
             </div>
           </div>
         </div>
-        <div
-          v-if="getAudiosLength > 0 && forceItemRender"
-          style="padding: 1em; overflow-y: auto"
-        >
-          <div v-for="(item, idx) in getAudios" :key="idx">
-            <div
-              :class="[
-                activeIndex === idx ? 'audio-item-selected' : '',
-                'audio-item d-flex align-items-center justify-content-between',
-              ]"
-              :id="idx"
-              @click="onSelect($event)"
-            >
-              <div class="waveform-container">
-                <WaveSurfer :src="item.wav" :options="options" :play="false" />
-              </div>
-              <div class="tag-annotate">
+        <div class="items-wrapper">
+          <div
+            v-if="getAudiosLength > 0 && forceItemRender"
+            style="padding: 1em; overflow-y: auto"
+          >
+            <div v-for="(item, idx) in getAudios" :key="idx">
+              <div
+                :class="[
+                  activeIndex === idx ? 'audio-item-selected' : '',
+                  'audio-item d-flex align-items-center justify-content-between',
+                ]"
+                :id="idx"
+                @click="onSelect($event)"
+              >
+                <div class="waveform-container">
+                  <WaveSurfer :src="item.wav" :options="options" :play="false" />
+                </div>
+                <div class="tag-annotate">
+                  <img
+                    v-show="idx !== 0"
+                    src="../assets/UI/svg/angle-arrow-up.svg"
+                    height="16"
+                    @click="changeOrder(idx, -1)"
+                  />
+                  <img
+                    v-show="idx !== getAudiosLength - 1"
+                    src="../assets/UI/svg/angle-arrow-down.svg"
+                    height="16"
+                    @click="changeOrder(idx, 1)"
+                  />
+                </div>
+                <div class="audio-actions">
+                  <img
+                    @click="openMFCC"
+                    src="../assets/UI/svg/wave-icon.svg"
+                    height="20"
+                    class="op-btn"
+                  />
+                  <img
+                    src="../assets/UI/svg/pause-icon.svg"
+                    v-if="isPlaying === idx"
+                    height="20"
+                    class="op-btn"
+                    @click="togglePlay($event, -1)"
+                  />
+                  <img
+                    src="../assets/UI/svg/play-icon.svg"
+                    v-else
+                    height="20"
+                    class="op-btn"
+                    @click="togglePlay($event, idx)"
+                  />
+                </div>
                 <img
-                  v-show="idx !== 0"
-                  src="../assets/UI/svg/angle-arrow-up.svg"
-                  height="16"
-                  @click="changeOrder(idx, -1)"
-                />
-                <img
-                  v-show="idx !== getAudiosLength - 1"
-                  src="../assets/UI/svg/angle-arrow-down.svg"
-                  height="16"
-                  @click="changeOrder(idx, 1)"
-                />
-              </div>
-              <div class="audio-actions">
-                <img
-                  @click="openMFCC"
-                  src="../assets/UI/svg/wave-icon.svg"
-                  height="20"
+                  src="../assets/UI/svg/cancel-icon.svg"
+                  height="32"
                   class="op-btn"
-                />
-                <img
-                  src="../assets/UI/svg/pause-icon.svg"
-                  v-if="isPlaying === idx"
-                  height="20"
-                  class="op-btn"
-                  @click="togglePlay($event, -1)"
-                />
-                <img
-                  src="../assets/UI/svg/play-icon.svg"
-                  v-else
-                  height="20"
-                  class="op-btn"
-                  @click="togglePlay($event, idx)"
+                  @click="deleteSound($event, idx)"
                 />
               </div>
-              <img
-                src="../assets/UI/svg/cancel-icon.svg"
-                height="32"
-                class="op-btn"
-                @click="deleteSound($event, idx)"
-              />
+            </div>
+          </div>
+          <div
+            v-else
+            class="no-record d-flex flex-fill align-items-center justify-content-center"
+          >
+            <div class="text-center">
+              <img src="../assets/UI/png/run.png" width="200" />
+              <p>
+                No Record yet, please use record button <br />
+                to record set of data
+              </p>
             </div>
           </div>
         </div>
@@ -705,6 +719,13 @@ $primary-color: #007e4e;
       text-transform: uppercase;
     }
   }
+}
+.items-wrapper {
+  height: calc(100% - 250px);
+  overflow-y: auto;
+}
+.no-record {
+  height: 100%;
 }
 .recorder-container-active {
   border: 10px solid #007e4e !important;

@@ -84,66 +84,252 @@
           </div>
           </div>
         </div>
-        <div v-if="getAudios.length > 0" style="padding: 1em; overflow-y: auto;">
-          <div v-for="(item, idx) in getAudios" :key="idx">
-            <div
-              :class="[
-                activeIndex.includes(idx) ? 'audio-item-selected' : '',
-                'audio-item d-flex align-items-center justify-content-between',
-              ]"
-              :id="idx"
-              @click.exact="onSelect($event)"
-              @click.shift="onSelectMulti($event)"
-            >
-              <div class="waveform-container">
-                <WaveSurfer :src="item.wav" :options="options" :play="false" />
-              </div>
-              <div class="d-flex align-items-center">
-                <div class="tag-annotate" v-show="item.isAnnotated">
-                  <img src="../assets/UI/svg/Group 177_green.svg" height="16" />
+        <div class="items-wrapper">
+          <div v-if="getAudios.length > 0" style="padding: 1em; overflow-y: auto;">
+            <div v-for="(item, idx) in getAudios" :key="idx">
+              <div
+                :class="[
+                  activeIndex.includes(idx) ? 'audio-item-selected' : '',
+                  'audio-item d-flex align-items-center justify-content-between',
+                ]"
+                :id="idx"
+                @click.exact="onSelect($event)"
+                @click.shift="onSelectMulti($event)"
+              >
+                <div class="waveform-container">
+                  <WaveSurfer :src="item.wav" :options="options" :play="false" />
                 </div>
-                <div class="audio-actions">
+                <div class="d-flex align-items-center">
+                  <div class="tag-annotate" v-show="item.isAnnotated">
+                    <img src="../assets/UI/svg/Group 177_green.svg" height="16" />
+                  </div>
+                  <div class="audio-actions">
+                    <img
+                      @click="openMFCC($event, idx)"
+                      src="../assets/UI/svg/wave-icon.svg"
+                      height="20"
+                      class="op-btn"
+                    />
+                    <img
+                      src="../assets/UI/svg/pause-icon.svg"
+                      v-if="isPlaying === idx"
+                      height="20"
+                      class="op-btn"
+                      @click="togglePlay($event, -1)"
+                    />
+                    <img
+                      src="../assets/UI/svg/play-icon.svg"
+                      v-else
+                      height="20"
+                      class="op-btn"
+                      @click="togglePlay($event, idx)"
+                    />
+                  </div>
                   <img
-                    @click="openMFCC($event, idx)"
-                    src="../assets/UI/svg/wave-icon.svg"
-                    height="20"
+                    src="../assets/UI/svg/cancel-icon.svg"
+                    height="32"
                     class="op-btn"
-                  />
-                  <img
-                    src="../assets/UI/svg/pause-icon.svg"
-                    v-if="isPlaying === idx"
-                    height="20"
-                    class="op-btn"
-                    @click="togglePlay($event, -1)"
-                  />
-                  <img
-                    src="../assets/UI/svg/play-icon.svg"
-                    v-else
-                    height="20"
-                    class="op-btn"
-                    @click="togglePlay($event, idx)"
+                    @click="deleteSound($event, idx)"
                   />
                 </div>
-                <img
-                  src="../assets/UI/svg/cancel-icon.svg"
-                  height="32"
-                  class="op-btn"
-                  @click="deleteSound($event, idx)"
-                />
               </div>
             </div>
           </div>
-        </div>
-        <div
-          v-else
-          class="d-flex flex-fill align-items-center justify-content-center"
-        >
-          <div class="text-center">
-            <img src="../assets/UI/png/run.png" width="200" />
-            <p>
-              No Record yet, please use record button <br />
-              to record set of data
-            </p>
+          <!-- <div style="padding: 1em; overflow-y: auto;">
+            <div>
+              <div class="audio-item d-flex align-items-center justify-content-between">
+                <div class="waveform-container">
+                </div>
+                <div class="d-flex align-items-center">
+                  <div class="tag-annotate"><img src="../assets/UI/svg/Group 177_green.svg" height="16" /></div>
+                  <div class="audio-actions">
+                    <img src="../assets/UI/svg/wave-icon.svg" height="20" class="op-btn"/>
+                    <img src="../assets/UI/svg/play-icon.svg" height="20" class="op-btn"/>
+                  </div>
+                  <img src="../assets/UI/svg/cancel-icon.svg" height="32" class="op-btn"/>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="audio-item d-flex align-items-center justify-content-between">
+                <div class="waveform-container">
+                </div>
+                <div class="d-flex align-items-center">
+                  <div class="tag-annotate"><img src="../assets/UI/svg/Group 177_green.svg" height="16" /></div>
+                  <div class="audio-actions">
+                    <img src="../assets/UI/svg/wave-icon.svg" height="20" class="op-btn"/>
+                    <img src="../assets/UI/svg/play-icon.svg" height="20" class="op-btn"/>
+                  </div>
+                  <img src="../assets/UI/svg/cancel-icon.svg" height="32" class="op-btn"/>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="audio-item d-flex align-items-center justify-content-between">
+                <div class="waveform-container">
+                </div>
+                <div class="d-flex align-items-center">
+                  <div class="tag-annotate"><img src="../assets/UI/svg/Group 177_green.svg" height="16" /></div>
+                  <div class="audio-actions">
+                    <img src="../assets/UI/svg/wave-icon.svg" height="20" class="op-btn"/>
+                    <img src="../assets/UI/svg/play-icon.svg" height="20" class="op-btn"/>
+                  </div>
+                  <img src="../assets/UI/svg/cancel-icon.svg" height="32" class="op-btn"/>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="audio-item d-flex align-items-center justify-content-between">
+                <div class="waveform-container">
+                </div>
+                <div class="d-flex align-items-center">
+                  <div class="tag-annotate"><img src="../assets/UI/svg/Group 177_green.svg" height="16" /></div>
+                  <div class="audio-actions">
+                    <img src="../assets/UI/svg/wave-icon.svg" height="20" class="op-btn"/>
+                    <img src="../assets/UI/svg/play-icon.svg" height="20" class="op-btn"/>
+                  </div>
+                  <img src="../assets/UI/svg/cancel-icon.svg" height="32" class="op-btn"/>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="audio-item d-flex align-items-center justify-content-between">
+                <div class="waveform-container">
+                </div>
+                <div class="d-flex align-items-center">
+                  <div class="tag-annotate"><img src="../assets/UI/svg/Group 177_green.svg" height="16" /></div>
+                  <div class="audio-actions">
+                    <img src="../assets/UI/svg/wave-icon.svg" height="20" class="op-btn"/>
+                    <img src="../assets/UI/svg/play-icon.svg" height="20" class="op-btn"/>
+                  </div>
+                  <img src="../assets/UI/svg/cancel-icon.svg" height="32" class="op-btn"/>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="audio-item d-flex align-items-center justify-content-between">
+                <div class="waveform-container">
+                </div>
+                <div class="d-flex align-items-center">
+                  <div class="tag-annotate"><img src="../assets/UI/svg/Group 177_green.svg" height="16" /></div>
+                  <div class="audio-actions">
+                    <img src="../assets/UI/svg/wave-icon.svg" height="20" class="op-btn"/>
+                    <img src="../assets/UI/svg/play-icon.svg" height="20" class="op-btn"/>
+                  </div>
+                  <img src="../assets/UI/svg/cancel-icon.svg" height="32" class="op-btn"/>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="audio-item d-flex align-items-center justify-content-between">
+                <div class="waveform-container">
+                </div>
+                <div class="d-flex align-items-center">
+                  <div class="tag-annotate"><img src="../assets/UI/svg/Group 177_green.svg" height="16" /></div>
+                  <div class="audio-actions">
+                    <img src="../assets/UI/svg/wave-icon.svg" height="20" class="op-btn"/>
+                    <img src="../assets/UI/svg/play-icon.svg" height="20" class="op-btn"/>
+                  </div>
+                  <img src="../assets/UI/svg/cancel-icon.svg" height="32" class="op-btn"/>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="audio-item d-flex align-items-center justify-content-between">
+                <div class="waveform-container">
+                </div>
+                <div class="d-flex align-items-center">
+                  <div class="tag-annotate"><img src="../assets/UI/svg/Group 177_green.svg" height="16" /></div>
+                  <div class="audio-actions">
+                    <img src="../assets/UI/svg/wave-icon.svg" height="20" class="op-btn"/>
+                    <img src="../assets/UI/svg/play-icon.svg" height="20" class="op-btn"/>
+                  </div>
+                  <img src="../assets/UI/svg/cancel-icon.svg" height="32" class="op-btn"/>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="audio-item d-flex align-items-center justify-content-between">
+                <div class="waveform-container">
+                </div>
+                <div class="d-flex align-items-center">
+                  <div class="tag-annotate"><img src="../assets/UI/svg/Group 177_green.svg" height="16" /></div>
+                  <div class="audio-actions">
+                    <img src="../assets/UI/svg/wave-icon.svg" height="20" class="op-btn"/>
+                    <img src="../assets/UI/svg/play-icon.svg" height="20" class="op-btn"/>
+                  </div>
+                  <img src="../assets/UI/svg/cancel-icon.svg" height="32" class="op-btn"/>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="audio-item d-flex align-items-center justify-content-between">
+                <div class="waveform-container">
+                </div>
+                <div class="d-flex align-items-center">
+                  <div class="tag-annotate"><img src="../assets/UI/svg/Group 177_green.svg" height="16" /></div>
+                  <div class="audio-actions">
+                    <img src="../assets/UI/svg/wave-icon.svg" height="20" class="op-btn"/>
+                    <img src="../assets/UI/svg/play-icon.svg" height="20" class="op-btn"/>
+                  </div>
+                  <img src="../assets/UI/svg/cancel-icon.svg" height="32" class="op-btn"/>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="audio-item d-flex align-items-center justify-content-between">
+                <div class="waveform-container">
+                </div>
+                <div class="d-flex align-items-center">
+                  <div class="tag-annotate"><img src="../assets/UI/svg/Group 177_green.svg" height="16" /></div>
+                  <div class="audio-actions">
+                    <img src="../assets/UI/svg/wave-icon.svg" height="20" class="op-btn"/>
+                    <img src="../assets/UI/svg/play-icon.svg" height="20" class="op-btn"/>
+                  </div>
+                  <img src="../assets/UI/svg/cancel-icon.svg" height="32" class="op-btn"/>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="audio-item d-flex align-items-center justify-content-between">
+                <div class="waveform-container">
+                </div>
+                <div class="d-flex align-items-center">
+                  <div class="tag-annotate"><img src="../assets/UI/svg/Group 177_green.svg" height="16" /></div>
+                  <div class="audio-actions">
+                    <img src="../assets/UI/svg/wave-icon.svg" height="20" class="op-btn"/>
+                    <img src="../assets/UI/svg/play-icon.svg" height="20" class="op-btn"/>
+                  </div>
+                  <img src="../assets/UI/svg/cancel-icon.svg" height="32" class="op-btn"/>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="audio-item d-flex align-items-center justify-content-between">
+                <div class="waveform-container">
+                </div>
+                <div class="d-flex align-items-center">
+                  <div class="tag-annotate"><img src="../assets/UI/svg/Group 177_green.svg" height="16" /></div>
+                  <div class="audio-actions">
+                    <img src="../assets/UI/svg/wave-icon.svg" height="20" class="op-btn"/>
+                    <img src="../assets/UI/svg/play-icon.svg" height="20" class="op-btn"/>
+                  </div>
+                  <img src="../assets/UI/svg/cancel-icon.svg" height="32" class="op-btn"/>
+                </div>
+              </div>
+            </div>
+          </div> -->
+          <div
+            v-else
+            class="no-record d-flex flex-fill align-items-center justify-content-center"
+          >
+            <div class="text-center">
+              <img src="../assets/UI/png/run.png" width="200" />
+              <p>
+                No Record yet, please use record button <br />
+                to record set of data
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -1010,6 +1196,13 @@ $primary-color: #007e4e;
       text-transform: uppercase;
     }
   }
+}
+.items-wrapper {
+  height: calc(100% - 250px);
+  overflow-y: auto;
+}
+.no-record {
+  height: 100%;
 }
 .bottom-action {
   margin-bottom: 2em;
