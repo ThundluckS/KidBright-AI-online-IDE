@@ -104,10 +104,10 @@
                 <div class="tag-annotate" v-show="item.isAnnotated">
                   <img src="../assets/UI/svg/Group 177_green.svg" height="16" />
                 </div>
-                <div class="d-flex align-items-center">
-                  <div class="tag-annotate" v-show="item.isAnnotated">
+                <!-- <div class="d-flex align-items-center"> -->
+                  <!-- <div class="tag-annotate" v-show="item.isAnnotated">
                     <img src="../assets/UI/svg/Group 177_green.svg" height="16" />
-                  </div>
+                  </div> -->
                   <div class="audio-actions">
                     <img
                       @click="openMFCC($event, idx)"
@@ -136,7 +136,7 @@
                     class="op-btn"
                     @click="deleteSound($event, idx)"
                   />
-                </div>
+                <!-- </div> -->
               </div>
             </div>
           </div>
