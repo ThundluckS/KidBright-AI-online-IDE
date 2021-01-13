@@ -436,7 +436,6 @@
         </p>
       </form>
     </b-modal>
-
     <b-modal
       id="modal_list_files"
       ref="openModal"
@@ -485,7 +484,6 @@
       >
       </b-table>
     </b-modal>
-
     <b-modal
       id="modal_list_delete_files"
       title="ลบโปรเจค"
@@ -528,7 +526,6 @@
       >
       </b-table>
     </b-modal>
-
     <b-modal
       ref="pyhonLoading"
       hide-footer
@@ -549,7 +546,6 @@
         </b-progress>
       </div>
     </b-modal>
-
     <b-modal
       modal-class="my-modal-class"
       id="wifi_conn"
