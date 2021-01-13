@@ -8,6 +8,7 @@
       :hide-footer="true"
     >
       <img
+        v-if="activeIndex.length > 0 && getAudios[activeIndex[0]] && getAudios[activeIndex[0]].mfcc != undefined" 
         :src="activeIndex.length > 0 ? getAudios[activeIndex[0]].mfcc : null"
         width="100%"
       />
@@ -84,8 +85,9 @@
           </div>
           </div>
         </div>
-        <div v-if="getAudios.length > 0" style="padding: 1em; overflow-y: auto;">
+        <div v-if="getAudios.length > 0 && forceItemRender" style="padding: 1em; overflow-y: auto;">
           <div v-for="(item, idx) in getAudios" :key="idx">
+            <h5>{{item.fileName}}</h5>
             <div
               :class="[
                 activeIndex.includes(idx) ? 'audio-item-selected' : '',
@@ -163,10 +165,11 @@
               <div v-for="(item, idx) in getAudiosClasses" :key="idx">
                 <button
                   class="btn added-label w-100"
-                  @click="onLabelSound(item.label)"
-                  >{{ item.label }}
-                  <div style="position: absolute;right: 15px;" class="right-group">
-                      <img class="ml-2" src="../assets/UI/png/Group 114.png" height="22" alt="" srcset="" />
+                  style="margin-bottom:10px;"
+                  >
+                  <span @click="onLabelSound(item.label)">{{ item.label }}</span>
+                  <div style="position: absolute;right: 15px;" class="right-group" @click="onDeleteRootLabel(item.label)">
+                    <img class="ml-2" src="../assets/UI/png/Group 114.png" height="22" alt="" srcset="" />
                   </div>
                 </button>
               </div>
@@ -355,6 +358,8 @@ export default {
       currentAnnotate: [],
       timeCurrent: null,
       timeDuration: null,
+      volume: 0.4,
+      forceItemRender: true,
     };
   },
   methods: {
@@ -452,6 +457,12 @@ export default {
         this.renderComponent = true;
       });
     },
+    forceItemRerender() {
+      this.forceItemRender = false;
+      this.$nextTick(() => {
+        this.forceItemRender = true;
+      });
+    },
     onNewLabel: function () {
       this.$refs["class-modal"].show();
     },
@@ -476,19 +487,36 @@ export default {
       const file = this.activeIndex.map(
         (selected) => this.getAudios[selected].fileName
       );
-      axiosInstance
-        .post(`/wav/${this.getProjectDir}/label`, { label, file })
+      if(file.length > 0){
+        axiosInstance.post(`/wav/${this.getProjectDir}/label`, { label, file })
         .then((response) => {
           if (response.data.status === "success") {
             this.$store.dispatch("reqAudios");
             this.currentAnnotate = [label];
           }
-        })
-        .catch((error) => {
+        }).catch((error) => {
+          console.log(error);
+        });
+      }else{
+        alert('Select Audio First')
+      }
+    },
+    onDeleteRootLabel: function(label){
+      axiosInstance.delete(`/wav/${this.getProjectDir}/class/${label}`)
+        .then((response) => {
+          let status = response.data.status;
+          console.log('status: ',status);
+          if (status === "busy") {
+            alert('Annotation Busy')
+          }else if (status === "success") {
+            this.$store.dispatch("reqAudiosClasses");
+          }
+        }).catch((error) => {
           console.log(error);
         });
     },
     onRemoveLabelSound: function () {
+      console.log('onRemoveLabelSound')
       const file = this.getAudios[this.activeIndex[0]].fileName;
       axiosInstance
         .delete(`/wav/${this.getProjectDir}/label/${file}`)
@@ -570,6 +598,12 @@ export default {
         this.deviceId = first.deviceId;
       }
     },
+    selectedAudio: function () {
+      this.forceRerender();
+    },
+    getAudios: function (value) {
+      this.forceItemRerender();
+    },
     isCameraOpen: function (value) {
       // console.log(value)
       if (!value) this.onStop();
@@ -591,10 +625,7 @@ export default {
           this.currentAnnotate = [];
         }
       },
-    },
-    selectedAudio: function () {
-      this.forceRerender();
-    },
+    }
   },
 };
 </script>

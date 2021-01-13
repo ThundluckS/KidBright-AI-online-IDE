@@ -85,11 +85,9 @@
             </div>
           </div>
         </div>
-        <div
-          v-if="getAudiosLength > 0 && forceItemRender"
-          style="padding: 1em; overflow-y: auto"
-        >
+        <div v-if="getAudiosLength > 0 && forceItemRender" style="padding: 1em; overflow-y: auto">
           <div v-for="(item, idx) in getAudios" :key="idx">
+            <h5>{{item.fileName}}</h5>
             <div
               :class="[
                 activeIndex === idx ? 'audio-item-selected' : '',
@@ -337,11 +335,20 @@ export default {
     stopRecord() {
       clearInterval(this.timeInterval);
       console.log("Stop recording");
-      axiosInstance
-        .post(`/wav/${this.getProjectDir}/order/add`)
-        .then((response) => {
-          this.$store.dispatch("reqAudios");
-        });
+
+      // check delay 
+      // show loading
+      setTimeout(() => {
+        axiosInstance
+          .post(`/wav/${this.getProjectDir}/order/add`)
+          .then((response) => {
+            // Delay
+            setTimeout(() => {
+              this.$store.dispatch("reqAudios");
+            },1000)
+          });
+      },2000)
+      
     },
     onRecord() {
       if (this.isRecording) {
@@ -357,11 +364,14 @@ export default {
     },
     deleteSound: function (event, index) {
       event.stopPropagation();
+      // console.log('Deleting : ',item.id,item.fileName);
       axiosInstance
         .delete(`/wav/${this.getProjectDir}/${this.getAudios[index].fileName}`)
         .then(() => {
-          console.log("Sound has been deleted");
-          this.$store.dispatch("reqAudios");
+          setTimeout(() => {
+            this.$store.dispatch("reqAudios");
+            console.log("Sound has been deleted");
+          },800)
         });
     },
     onSelect: function (event) {

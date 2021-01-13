@@ -488,10 +488,31 @@
 
     <b-modal
       id="modal_list_delete_files"
-      title="Project list"
+      title="ลบโปรเจค"
       @ok="handleProjectDelete"
       modal-class="my-modal-class"
     >
+
+    <b-form-group label="Project type">
+      <b-dropdown
+        id="dropdown-1"
+        :text="
+          typeSelect !== 'None'
+            ? typeSelect
+            : 'เลือกประเภทการเรียนรู้ (Select training type)'
+        " class="mode-select">
+        <b-dropdown-item @click="handleSelect('Object detection')">
+          การตรวจจับวัตถุ (Object detection)
+        </b-dropdown-item>
+        <b-dropdown-item @click="handleSelect('Image classification')">
+          การแยกแยะรูปภาพ (Image classification)
+        </b-dropdown-item>
+        <b-dropdown-item @click="handleSelect('Sound')">
+          Time series: Sound
+        </b-dropdown-item>
+      </b-dropdown>
+    </b-form-group>
+
       <b-table
         show-empty
         striped
@@ -898,7 +919,6 @@ export default {
       this.$store.dispatch("clearBlocklyWorkspace");
       if(this.getProjectDir !== 'None'){
         this.handleTabChange(1);
-        console.log('New project active 11')
       }
 
       //  <li

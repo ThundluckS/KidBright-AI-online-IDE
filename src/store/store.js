@@ -35,6 +35,9 @@ export default new Vuex.Store({
 
   getters: {
     // Here we will create a getter
+    ['GET_AUDIOS']: state => {
+      return state.audios;
+    },
     getProjectDir: (state) => state.projectDir,
     getProjects: (state) => state.projects,
     getImages: (state) => state.images,
@@ -222,6 +225,7 @@ export default new Vuex.Store({
             class: info[index].class,
           })
         }
+        console.log('addAudios', allFiles)
         commit('addAudios', allFiles)
         commit('setProjDescription', response.data.projDescription)
       })
