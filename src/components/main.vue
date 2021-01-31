@@ -160,16 +160,18 @@
             </div>
           </div>
           <div
-            v-if="getTrainingType !== 'None' && selectedMenu === 1"
+            v-if="getTrainingType === 'Object detection' && selectedMenu === 1"
             class="hint"
           >
             <div class="main-hint txt">
-              <p class="p-color font-weight-bold">ขั้นตอนที่ 1 Capture</p>
+              <p class="p-color font-weight-bold">ขั้นตอนที่ 1 Capture (Object Detection)</p>
               <p>
                 ขั้นตอนนี้เป็นการใช้งานกล้องในการเก็บภาพที่ต้องการ โดยกดปุ่ม
                 <img src="../assets/UI/svg/Group 113.svg" alt="" srcset="" />
-                เพื่อถ่ายภาพ (ควรถ่ายภาพวัตถุในมุมต่างๆ ประมาณ 50 ภาพต่อวัตถุ
-                หรือมากกว่า)
+                เพื่อถ่ายภาพ 
+                <br> ควรถ่ายภาพวัตถุในมุมต่างๆ ประมาณ 50 ภาพต่อวัตถุหรือมากกว่า
+                และสามารถถ่ายภาพวัตถุหลายชนิดหรือหลายชิ้นในภาพเดียวกันได้ ไม่จำกัดจำนวน 
+                แต่ต้องเห็นขอบเขตลักษณะวัตถุแต่ละชิ้นแยกกันอย่างชัดเจน
               </p>
             </div>
             <div class="mascot">
@@ -177,25 +179,107 @@
             </div>
           </div>
           <div
-            v-if="getTrainingType !== 'None' && selectedMenu === 2"
+            v-if="getTrainingType === 'Image classification' && selectedMenu === 1"
             class="hint"
           >
             <div class="main-hint txt">
-              <p class="p-color font-weight-bold">ขั้นตอนที่ 2 Annotate</p>
-              <p>ขั้นตอนนี้ใช้สำหรับกำหนดขอบเขตและระบุชื่อวัตถุ</p>
+              <p class="p-color font-weight-bold">ขั้นตอนที่ 1 Capture (Image Classification)</p>
+              <p>
+                ขั้นตอนนี้เป็นการใช้งานกล้องในการเก็บภาพที่ต้องการ โดยกดปุ่ม
+                <img src="../assets/UI/svg/Group 113.svg" alt="" srcset="" />
+                เพื่อถ่ายภาพ 
+                <br> ในหนึ่งภาพจะต้องมีวัตถุหรือรูปแบบเพียงชนิดเดียวเท่านั้น
+              </p>
+            </div>
+            <div class="mascot">
+              <img src="../assets/UI/png/Mask Group 11.png" alt="" srcset="" />
+            </div>
+          </div>
+          <div
+            v-if="getTrainingType === 'Sound' && selectedMenu === 1"
+            class="hint"
+          >
+            <div class="main-hint txt">
+              <p class="p-color font-weight-bold">ขั้นตอนที่ 1 Capture (Voice Classification)</p>
+              <p>
+                ขั้นตอนนี้เป็นการใช้ไมโครโฟนในการบันทึกเสียงที่ต้องการ โดยกดปุ่ม
+                <img src="../assets/UI/png/Group 200.png" alt="" srcset="" />
+                เพื่อบันทึกเสียง (ควรบันทึกเสียงอย่างน้อย 20 เสียงต่อคำหรือมากกว่า)
+              </p>
+            </div>
+            <div class="mascot">
+              <img src="../assets/UI/png/Mask Group 11.png" alt="" srcset="" />
+            </div>
+          </div>
+          <div
+            v-if="getTrainingType === 'Object detection' && selectedMenu === 2"
+            class="hint"
+          >
+            <div class="main-hint txt">
+              <p class="p-color font-weight-bold">ขั้นตอนที่ 2 Annotate (Object Detection)</p>
+              <p>ขั้นตอนนี้ใช้สำหรับกำหนดขอบเขตและติดป้ายกำกับให้วัตถุ</p>
               <p>
                 <br />1. กดปุ่ม
                 <img src="../assets/UI/svg/Group 97.svg" alt="" srcset="" />
-                เพื่อตั้งชื่อใหม่ให้กับวัตถุจากนั้นกำหนดขอบเขตโดยให้วัตถุอยู่ภายในกรอบสี่เหลี่ยมที่กำหนด
+                เพื่อตั้งชื่อป้ายกำกับให้กับวัตถุแต่ละชนิด 
+              </p>
+              <p>
+                <br />2. กำหนดขอบเขตของวัตถุ โดยทำการลากคลุมวัตถุให้อยู่ภายในกรอบสี่เหลี่ยม
+                <img src="../assets/UI/svg/Group 96.svg" alt="" srcset="" />
+                ที่กำหนดพอดี ไม่ตีกรอบใหญ่หรือเล็กเกินไป 
+              </p>
+              <p>
+                <br />3. กดปุ่ม
+                <img src="../assets/UI/svg/interface.svg" alt="" srcset="" />
+                หลังชื่อป้ายกำกับ เมื่อต้องการใช้ชื่อที่ตั้งไว้เเล้ว จะปรากฏป้ายกำกับพร้อมพิกัดอยู่บริเวณขวามือ
+              </p>
+              <p>
+                <br> หมายเหตุ: สามารถติดป้ายกำกับมากกว่า 1 ป้ายต่อภาพ ขึ้นอยู่กับจำนวนวัตถุในรูปภาพนั้น
+              </p>
+            </div>
+            <div class="mascot">
+              <img src="../assets/UI/png/Mask Group 11.png" alt="" srcset="" />
+            </div>
+          </div>
+          <div
+            v-if="getTrainingType === 'Image classification' && selectedMenu === 2"
+            class="hint"
+          >
+            <div class="main-hint txt">
+              <p class="p-color font-weight-bold">ขั้นตอนที่ 2 Annotate (Image Classification)</p>
+              <p>ขั้นตอนนี้ใช้สำหรับติดป้ายกำกับให้กับรูปภาพ</p>
+              <p>
+                <br />1. กดปุ่ม
+                <img src="../assets/UI/svg/Group 97.svg" alt="" srcset="" />
+                เพื่อตั้งชื่อป้ายกำกับให้กับรูปแต่ละประเภท
               </p>
               <p>
                 <br />2. กดปุ่ม
                 <img src="../assets/UI/svg/interface.svg" alt="" srcset="" />
-                เมื่อต้องการใช้ชื่อที่ตั้งไว้เเล้ว
-                จะประกฏกรอบสี่เหลี่ยมขึ้นบนภาพ
-                <img src="../assets/UI/svg/Group 96.svg" alt="" srcset="" />
-                จากนั้นกำหนดขอบเขตให้วัตถุ
+                หลังชื่อป้ายกำกับ เมื่อต้องการใช้ชื่อที่ตั้งไว้เเล้ว จะปรากฏป้ายกำกับบริเวณขวามือ
               </p>
+            </div>
+            <div class="mascot">
+              <img src="../assets/UI/png/Mask Group 11.png" alt="" srcset="" />
+            </div>
+          </div>
+          <div
+            v-if="getTrainingType === 'Sound' && selectedMenu === 2"
+            class="hint"
+          >
+            <div class="main-hint txt">
+              <p class="p-color font-weight-bold">ขั้นตอนที่ 2 Annotate (Voice Classification)</p>
+              <p>ขั้นตอนนี้ใช้สำหรับติดป้ายกำกับให้กับเสียง</p>
+              <p>
+                <br />1. กดปุ่ม
+                <img src="../assets/UI/svg/Group 97.svg" alt="" srcset="" />
+                เพื่อตั้งชื่อป้ายกำกับให้กับเสียงแต่ละประเภท
+              </p>
+              <p>
+                <br />2. กดปุ่ม
+                <img src="../assets/UI/svg/interface.svg" alt="" srcset="" />
+                หลังชื่อป้ายกำกับ เมื่อต้องการใช้ชื่อที่ตั้งไว้เเล้ว จะปรากฏป้ายกำกับบริเวณขวามือ
+              </p>              
             </div>
             <div class="mascot">
               <img src="../assets/UI/png/Mask Group 11.png" alt="" srcset="" />
@@ -211,7 +295,33 @@
               <p class="p-color font-weight-bold">
                 ขั้นตอนที่ 3 Training<br />(Image Classification)
               </p>
-              <p>ขั้นตอนนี้เป็นการนำภาพที่ Annotate มาแล้วมาสร้างโมเดลรู้จำ</p>
+              <p>ขั้นตอนนี้เป็นการนำภาพที่ Annotate มาแล้วมาสร้างโมเดลปัญญาประดิษฐ์เพื่อแยกแยะรูปภาพ</p>
+              <p>
+                <br />1. กดปุ่ม
+                <span class="p-color">Train</span> เพื่อสร้างโมเดล
+                รอจนกระบวนการสร้างโมเดลแล้วเสร็จ
+              </p>
+              <p>
+                <br />2. กดปุ่ม
+                <span class="p-color">Download</span>
+                เมื่อเสร็จขั้นตอนนี้โมเดลจะถูกเรียกใช้ได้ในขั้นตอนที่ 4 Coding
+              </p>
+            </div>
+            <div class="mascot">
+              <img src="../assets/UI/png/Mask Group 11.png" alt="" srcset="" />
+            </div>
+          </div>
+          <div
+            v-if="
+              getTrainingType === 'Sound' && selectedMenu === 3
+            "
+            class="hint"
+          >
+            <div class="main-hint txt">
+              <p class="p-color font-weight-bold">
+                ขั้นตอนที่ 3 Training<br />(Voice Classification)
+              </p>
+              <p>ขั้นตอนนี้เป็นการนำเสียงที่ Annotate แล้วมาสร้างโมเดลปัญญาประดิษฐ์เพื่อแยกแยะเสียง</p>
               <p>
                 <br />1. กดปุ่ม
                 <span class="p-color">Train</span> เพื่อสร้างโมเดล
@@ -280,6 +390,14 @@
                 >
                 <br /><span class="p-color">ขั้นตอนที่ 2 (Annotate)</span>
                 <br /><span class="p-color">ขั้นตอนที่ 3 (Training)</span>
+              </p>
+              <p>
+                <br><b>ชุด blockly ที่เกี่ยวข้องกัน</b>
+                <ul>
+                  <li> * Start object detector และ get objects </li>
+                  <li> * Start Image classification และ get classes </li>
+                  <li> * Start wake word detector และ get sound </li>
+                </ul>
               </p>
             </div>
             <div class="mascot">
@@ -374,12 +492,17 @@
               >การแยกแยะรูปภาพ (Image classification)</b-dropdown-item
             >
             <b-dropdown-item @click="handleSelect('Sound')"
-              >Time series: Sound</b-dropdown-item
+              >Time series: การแยกแยะเสียง (Voice Classification)</b-dropdown-item
             >
             <!-- <b-dropdown-item @click="handleSelect('IMU sensor')"
             >Time series: IMU Sensor</b-dropdown-item
           > -->
           </b-dropdown>
+          <p v-if="typeSelect === 'Sound'" class="p-notice-color small">
+            Duration (s) = ช่วงเวลาของคำ 1 คำ (มีค่าตั้งแต่ 1-3 วินาที)
+            <br>
+            Delay (ms) = ช่วงเวลาพักหายใจ หรือ ช่วงเว้นว่างระหว่างคำ (0 - 3000 ms)
+          </p>
         </b-form-group>
         <b-form-group
           v-if="typeSelect === 'Sound'"
