@@ -46,8 +46,8 @@
             :data="getRealtimeSound"
           />
           <div
-            style="width: 100%"
-            v-if="!isRecording && renderComponent && activeIndex !== -1"
+            style="width: 100%;"
+            v-if="!isRecording && renderComponent && activeIndex !== -1 && getAudios.length > 0 && forceItemRender"
           >
             <WaveSurfer
               :src="selectedAudio"
@@ -59,7 +59,7 @@
               :onSetDuration="onSetDuration"
             />
           </div>
-          <div class="recorder-wrap" v-if="!isRecording && renderComponent">
+          <div class="recorder-wrap" v-if="!isRecording && renderComponent && getAudios.length > 0 && forceItemRender">
             <div class="vol-adj d-flex" v-if="activeIndex !== -1">
               <img
                 src="../assets/UI/svg/volume-up.svg"
@@ -74,6 +74,7 @@
                 step="0.1"
               ></b-form-input>
             </div>
+           <div id="volControls">
             <div class="time-counter" v-if="activeIndex !== -1">
               <span class="current-time">{{
                 timeCurrent ? timeCurrent : "0:00"
@@ -83,6 +84,7 @@
             <div class="rec-counter" v-if="activeIndex === -1">
               {{ getAudiosLength }} Records
             </div>
+           </div>
           </div>
         </div>
         <div class="items-wrapper">
