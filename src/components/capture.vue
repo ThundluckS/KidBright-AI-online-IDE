@@ -60,7 +60,7 @@
             :key="id"
             v-on:click="onSelect($event)"
           >
-            <img class="thumb" :src="file.file" alt="" srcset="" />
+            <img class="thumb" :src="'server/'+file.file" alt="" srcset="" />
             <img
               class="cancel-btn"
               src="../assets/UI/png/cancel.png"
@@ -199,7 +199,7 @@ var axios_options = {
 };
 
 var axiosInstance = axios.create({
-  baseURL: `${location.protocol}//${location.hostname}:3000`,
+  baseURL: `${location.protocol}//${location.hostname}/server`,
 });
 
 export default {

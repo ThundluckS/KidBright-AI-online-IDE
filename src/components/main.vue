@@ -67,7 +67,7 @@
                 </svg>
                 {{ currentWifi ? currentWifi : "No Internet" }}</b-btn
               >
-              <b-btn
+              <!-- <b-btn
                 v-bind:class="'connection-' + getActiveDevice"
                 @click="onToggleDevice"
               >
@@ -83,7 +83,7 @@
                   />
                 </svg>
                 {{ getActiveDevice }} Device</b-btn
-              >
+              > -->
             </div>
           </div>
           <ul class="step">
@@ -735,7 +735,7 @@ import Blockly from "blockly";
 //import blocklyPython from 'node-blockly/python';
 
 var axiosInstance = axios.create({
-  baseURL: `${location.protocol}//${location.hostname}:3000`,
+  baseURL: `${location.protocol}//${location.hostname}/server`,
 });
 
 var axios_options = {
@@ -1492,7 +1492,7 @@ export default {
     );
 
     axiosInstance.get(uri, axios_options).then((response) => {
-      this.rbServer.connect("ws://" + response.data.IP + ":9090");
+      this.rbServer.connect("wss://" + response.data.IP + ":9090");
       console.log("ROS IP = " + response.data.IP);
     });
   },

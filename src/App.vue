@@ -15,7 +15,7 @@ import Main from "./components/main.vue";
 import LoadingScreen from "./components/LoadingScreen";
 /*import axios from 'axios'
 var axiosInstance = axios.create({
-    baseURL: `${location.protocol}//${location.hostname}:3000`,
+    baseURL: `${location.protocol}//${location.hostname}/server`,
 })*/
 export default {
   name: "app",

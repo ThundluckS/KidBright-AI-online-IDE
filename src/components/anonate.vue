@@ -43,7 +43,7 @@
             :key="id"
             v-on:click="onSelect($event)"
           >
-            <img class="thumb" :src="file.file" alt="" srcset="" /><span
+            <img class="thumb" :src="'server/'+file.file" alt="" srcset="" /><span
               v-if="file.isAnnotated === true"
               class="annotated-btn count"
               >{{ file.count }}</span
@@ -209,7 +209,7 @@ import { mapGetters } from "vuex";
 var convert = require("xml-js");
 
 var axiosInstance = axios.create({
-  baseURL: `${location.protocol}//${location.hostname}:3000`,
+  baseURL: `${location.protocol}//${location.hostname}/server`,
 });
 
 export default {

@@ -5,7 +5,7 @@ import axios from 'axios'
 Vue.use(Vuex)
 
 var axiosInstance = axios.create({
-  baseURL: `${location.protocol}//${location.hostname}:3000`,
+  baseURL: `${location.protocol}//${location.hostname}/server`,
 })
 
 export default new Vuex.Store({
@@ -24,7 +24,7 @@ export default new Vuex.Store({
     usb_path: '',
     rbServer: undefined,
     realtimeSound: [],
-    device: 'robot',
+    device: 'computer',
     inference: '',
     // projDescription: null
     projDescription: {

@@ -7,7 +7,7 @@
       modal-class="my-modal-class"
       :hide-footer="true"
     >
-      <img :src="selectedAudioMFCC" width="100%" />
+      <img :src="'server/'+selectedAudioMFCC" width="100%" />
     </b-modal>
     <div class="d-flex w-100 h-100 outer-wrap">
       <div
@@ -221,7 +221,7 @@ var axios_options = {
 };
 
 var axiosInstance = axios.create({
-  baseURL: `${location.protocol}//${location.hostname}:3000`,
+  baseURL: `${location.protocol}//${location.hostname}/server`,
 });
 
 export default {
