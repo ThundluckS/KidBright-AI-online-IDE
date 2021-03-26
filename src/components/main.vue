@@ -67,7 +67,7 @@
                 </svg>
                 {{ currentWifi ? currentWifi : "No Internet" }}</b-btn
               >
-              <b-btn
+              <!-- <b-btn
                 v-bind:class="'connection-' + getActiveDevice"
                 @click="onToggleDevice"
               >
@@ -83,7 +83,7 @@
                   />
                 </svg>
                 {{ getActiveDevice }} Device</b-btn
-              >
+              > -->
             </div>
           </div>
           <ul class="step">

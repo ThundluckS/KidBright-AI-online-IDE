@@ -24,7 +24,7 @@ export default new Vuex.Store({
     usb_path: '',
     rbServer: undefined,
     realtimeSound: [],
-    device: 'robot',
+    device: 'computer',
     inference: '',
     // projDescription: null
     projDescription: {
