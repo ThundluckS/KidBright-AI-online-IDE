@@ -1099,7 +1099,7 @@ export default {
       if (tabIndex === 2) {
         if (this.getTrainingType === "Object detection") {
           axiosInstance
-            .post("/getAnotaions", {
+            .post("/getAnotations", {
               projectpath: this.getProjectDir,
             })
             .then((response) => {
