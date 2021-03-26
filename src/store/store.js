@@ -170,7 +170,7 @@ export default new Vuex.Store({
         })
     },
     reqImages({ state, commit }, xmlAnnotate = false) {
-      let uri = `/img/${state.projectDir}?xmlAnnotate=${xmlAnnotate}`
+      let uri = `/server/img/${state.projectDir}?xmlAnnotate=${xmlAnnotate}`
       axiosInstance
         .get(uri)
         .then((response) => {
@@ -178,7 +178,7 @@ export default new Vuex.Store({
           var index, len
           var allImgs = []
           for (index = 0, len = info.length; index < len; ++index) {
-            var imPath = `${state.projectDir}/images/${info[index].file}`
+            var imPath = `/server/${state.projectDir}/images/${info[index].file}`
             if (xmlAnnotate) {
               allImgs.unshift({
                 fileName: info[index].file,

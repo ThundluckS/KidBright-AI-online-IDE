@@ -56,7 +56,7 @@
             @click.exact="onSelect($event)"
             @click.shift="onSelectMulti($event)"
           >
-            <img class="thumb" :src="file.file" alt="" srcset="" />
+            <img class="thumb" :src="'server/'+file.file" alt="" srcset="" />
             <img
               class="cancel-btn"
               src="../assets/UI/png/cancel.png"

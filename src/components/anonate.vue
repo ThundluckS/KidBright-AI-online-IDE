@@ -308,7 +308,7 @@ export default {
       };
       var result = convert.json2xml(this.anotate, options);
       var imPath =
-        "/" + this.$store.getters.getProjectDir + "/" + this.imFolder + "/";
+        "/server/" + this.$store.getters.getProjectDir + "/" + this.imFolder + "/";
       var xmlFileName =
         imPath + this.selectedFile.replace(/\.[^/.]+$/, "") + ".xml";
       this.savedXmlFilename =
@@ -395,7 +395,7 @@ export default {
         };
         var result = convert.json2xml(this.anotate, options);
         var imPath =
-          "/" + this.$store.getters.getProjectDir + "/" + this.imFolder + "/";
+          "/server/" + this.$store.getters.getProjectDir + "/" + this.imFolder + "/";
         var xmlFileName =
           imPath + previous_selectedFile.replace(/\.[^/.]+$/, "") + ".xml";
         this.savedXmlFilename =
@@ -441,7 +441,7 @@ export default {
       return (this.selectedIndx = index);
     },
     getXML: function () {
-      var imPath = "/" + this.$store.getters.getProjectDir + "/images/";
+      var imPath = "/server/" + this.$store.getters.getProjectDir + "/images/";
       var xmlFileName =
         imPath + this.selectedFile.replace(/\.[^/.]+$/, "") + ".xml";
       console.log("xmlFileName = ");
