@@ -316,7 +316,7 @@ export default {
   computed: {
     ...mapGetters(["getProjectDir", "getImages", "getImagesClasses"]),
     getImgSrc: function () {
-      return this.selectedFile;
+      return "server/"+this.selectedFile;
     },
   },
   watch: {
