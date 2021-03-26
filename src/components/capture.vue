@@ -60,7 +60,7 @@
             :key="id"
             v-on:click="onSelect($event)"
           >
-            <img class="thumb" :src="'server/'+file.file" alt="" srcset="" />
+            <img class="thumb" :src="'/server/'+file.file" alt="" srcset="" />
             <img
               class="cancel-btn"
               src="../assets/UI/png/cancel.png"
@@ -515,7 +515,7 @@ export default {
   computed: {
     ...mapGetters(["getProjectDir", "getImages", "getActiveDevice"]),
     getImgSrc: function () {
-      return "server/"+this.imgSrc;
+      return "/server/"+this.imgSrc;
     },
     device: function () {
       return this.devices.find((n) => n.deviceId === this.deviceId);

@@ -7,7 +7,7 @@
       modal-class="my-modal-class"
       :hide-footer="true"
     >
-      <img :src="'server/'+selectedAudioMFCC" width="100%" />
+      <img :src="'/server/'+selectedAudioMFCC" width="100%" />
     </b-modal>
     <div class="d-flex w-100 h-100 outer-wrap">
       <div

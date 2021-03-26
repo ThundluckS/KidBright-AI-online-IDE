@@ -56,7 +56,7 @@
             @click.exact="onSelect($event)"
             @click.shift="onSelectMulti($event)"
           >
-            <img class="thumb" :src="file.file" alt="" srcset="" />
+            <img class="thumb" :src="'/server/'+file.file" alt="" srcset="" />
             <img
               class="cancel-btn"
               src="../assets/UI/png/cancel.png"
@@ -316,7 +316,7 @@ export default {
   computed: {
     ...mapGetters(["getProjectDir", "getImages", "getImagesClasses"]),
     getImgSrc: function () {
-      return "server/"+this.selectedFile;
+      return "/server/"+this.selectedFile;
     },
   },
   watch: {

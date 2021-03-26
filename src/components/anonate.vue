@@ -43,7 +43,7 @@
             :key="id"
             v-on:click="onSelect($event)"
           >
-            <img class="thumb" :src="'server/'+file.file" alt="" srcset="" /><span
+            <img class="thumb" :src="'/server/'+file.file" alt="" srcset="" /><span
               v-if="file.isAnnotated === true"
               class="annotated-btn count"
               >{{ file.count }}</span
@@ -419,7 +419,7 @@ export default {
             console.log(error);
           });
       } else {
-        console.log("No anotaion");
+        console.log("No anotation");
       }
 
       console.log("pop array");
@@ -434,7 +434,7 @@ export default {
       //console.log(this.images[index].file)
       console.log(this.images[index]);
       console.log(this.images[index].file);
-      this.imSrc = this.images[index].file;
+      this.imSrc = "/server/"+this.images[index].file;
       this.selectedFile = this.images[index].fileName;
       this.imFolder = "images";
       this.getXML();
@@ -483,11 +483,12 @@ export default {
         });
     },
     onClick: function () {
-      console.log("Click");
+      console.log("onClick");
       //this.images = this.$store.getters.getImages;
       console.log(this.images);
     },
     rowSelected(items) {
+      console.log("rowSelected");
       console.log(items);
       return (this.selected = items);
     },
@@ -538,7 +539,7 @@ export default {
         // array empty or does not exist
       } else {
         var img = new Image();
-        img.src = "server/"+this.imageSrc();
+        img.src = "/server/"+this.imageSrc();
 
         img.onload = function () {
           // here you got the width and height
