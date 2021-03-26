@@ -538,7 +538,7 @@ export default {
         // array empty or does not exist
       } else {
         var img = new Image();
-        img.src = this.imageSrc();
+        img.src = "server/"+this.imageSrc();
 
         img.onload = function () {
           // here you got the width and height
