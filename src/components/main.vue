@@ -1509,7 +1509,7 @@ export default {
       "getAudios"
     ]),
     getImgSrc: function () {
-      return this.url;
+      return "server/"+this.url;
     },
     saveButton: function () {
       return this.isSaving ? "Saving..." : "Save to usb";
