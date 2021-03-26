@@ -170,7 +170,7 @@ export default new Vuex.Store({
         })
     },
     reqImages({ state, commit }, xmlAnnotate = false) {
-      let uri = `/server/img/${state.projectDir}?xmlAnnotate=${xmlAnnotate}`
+      let uri = `/img/${state.projectDir}?xmlAnnotate=${xmlAnnotate}`
       axiosInstance
         .get(uri)
         .then((response) => {
