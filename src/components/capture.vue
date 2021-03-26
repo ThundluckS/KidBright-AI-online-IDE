@@ -515,7 +515,7 @@ export default {
   computed: {
     ...mapGetters(["getProjectDir", "getImages", "getActiveDevice"]),
     getImgSrc: function () {
-      return "server/"+this.imgSrc;
+      return this.imgSrc;
     },
     device: function () {
       return this.devices.find((n) => n.deviceId === this.deviceId);
