@@ -36,11 +36,11 @@ export default {
         //stop the input from playing back through the speakers
         input.connect(audioContext.destination); //get the encoding
         
-
         this.recorder = new WebAudioRecorder(input, {
           workerDir: "js/",
           encoding: "wav",
           timeLimit: 3,
+          encodeAfterRecord: true,
           onEncoderLoading: function (recorder, encoding) {
             console.log("Loading " + encoding + " encoder...");
           },
